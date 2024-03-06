@@ -866,7 +866,12 @@ edge_params = {
             'p0': homo_edge_probability_from_D(uni_connections=447042,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_CP, 
                                                rec_connections=95439, connect_to_same_type=True),
             #rho is last value, gotten from D model.
-            'pr': rho_2_pr(p0,p0,rho),
+            'pr': rho_2_pr(
+                homo_edge_probability_from_D(uni_connections=447042,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_CP, 
+                                               rec_connections=95439, connect_to_same_type=True),
+                homo_edge_probability_from_D(uni_connections=447042,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_CP, 
+                                               rec_connections=95439, connect_to_same_type=True),
+                rho),
             'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
@@ -883,7 +888,12 @@ edge_params = {
             'p0': homo_edge_probability_from_D(uni_connections=187667,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_CS, 
                                                rec_connections=13118, connect_to_same_type=True),
             #rho is last value, gotten from D model.
-            'pr': rho_2_pr(p0,p0,rho),
+            'pr': rho_2_pr(
+                homo_edge_probability_from_D(uni_connections=187667,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_CS, 
+                                               rec_connections=13118, connect_to_same_type=True),
+                homo_edge_probability_from_D(uni_connections=187667,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_CS, 
+                                               rec_connections=13118, connect_to_same_type=True),
+                rho),
             'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
@@ -930,7 +940,12 @@ edge_params = {
             'p0': homo_edge_probability_from_D(uni_connections=39246,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=num_FSI, 
                                                rec_connections=27866, connect_to_same_type=True),
             #rho is last value, gotten from D model.
-            'pr': rho_2_pr(p0,p0,rho),
+            'pr': rho_2_pr(
+                homo_edge_probability_from_D(uni_connections=39246,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=num_FSI, 
+                                               rec_connections=27866, connect_to_same_type=True),
+                homo_edge_probability_from_D(uni_connections=39246,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=num_FSI, 
+                                               rec_connections=27866, connect_to_same_type=True),
+                rho),
             'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
@@ -947,7 +962,12 @@ edge_params = {
             'p0': homo_edge_probability_from_D(uni_connections=7206,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=num_LTS, 
                                                rec_connections=753, connect_to_same_type=True),
             #rho is last value, gotten from D model.
-            'pr': rho_2_pr(p0,p0,rho),
+            'pr': rho_2_pr(
+                homo_edge_probability_from_D(uni_connections=7206,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=num_LTS, 
+                                               rec_connections=753, connect_to_same_type=True),
+                homo_edge_probability_from_D(uni_connections=7206,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=num_LTS, 
+                                               rec_connections=753, connect_to_same_type=True),
+                rho),
             'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
@@ -966,7 +986,10 @@ edge_params = {
             #LTS2FSI
             'p1': homo_edge_probability_from_D(uni_connections=30280,dist_num_cell_B=dist_num_FSI , homo_num_cell_A=num_LTS),
             #rho is last value, gotten from D model.
-            'pr': rho_2_pr(p0,p1,rho),
+            'pr': rho_2_pr(
+                homo_edge_probability_from_D(uni_connections=14573,dist_num_cell_B=dist_num_LTS , homo_num_cell_A=num_FSI),
+                homo_edge_probability_from_D(uni_connections=30280,dist_num_cell_B=dist_num_FSI , homo_num_cell_A=num_LTS),
+                rho),
             'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
@@ -996,7 +1019,10 @@ edge_params = {
             #FSI2CP
             'p1': homo_edge_probability_from_D(uni_connections=191158,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_FSI),
             #rho is last value, gotten from D model.
-            'pr': rho_2_pr(p0,p1,rho),
+            'pr': rho_2_pr(
+                homo_edge_probability_from_D(uni_connections=84035,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=num_CP),
+                homo_edge_probability_from_D(uni_connections=191158,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_FSI),
+                rho),
             'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
@@ -1026,7 +1052,10 @@ edge_params = {
             #FSI2CS
             'p1': homo_edge_probability_from_D(uni_connections=168611,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_FSI),
             #rho is last value, gotten from D model.
-            'pr': rho_2_pr(p0,p1,rho),
+            'pr': rho_2_pr(
+                homo_edge_probability_from_D(uni_connections=103106,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=num_CS),
+                homo_edge_probability_from_D(uni_connections=168611,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_FSI),
+                rho),
             'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
@@ -1056,7 +1085,10 @@ edge_params = {
             #LTS2CP
             'p1': homo_edge_probability_from_D(uni_connections=179164,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_LTS),
             #rho is last value, gotten from D model.
-            'pr': rho_2_pr(p0,p1,rho),
+            'pr': rho_2_pr(
+                homo_edge_probability_from_D(uni_connections=84025,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=num_CP),
+                homo_edge_probability_from_D(uni_connections=179164,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_LTS),
+                rho),
             'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
@@ -1086,7 +1118,10 @@ edge_params = {
             #LTS2CS
             'p1': homo_edge_probability_from_D(uni_connections=44384,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_LTS),
             #rho is last value, gotten from D model.
-            'pr': rho_2_pr(p0,p1,rho),
+            'pr': rho_2_pr(
+                homo_edge_probability_from_D(uni_connections=93748,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=num_CS),
+                homo_edge_probability_from_D(uni_connections=44384,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_LTS),
+                rho),
             'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
