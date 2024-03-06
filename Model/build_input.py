@@ -36,6 +36,16 @@ SHELL_FR = pd.DataFrame.from_dict(
     SHELL_FR, orient='index', columns=('mean', 'stdev')).rename_axis('pop_name')
 SHELL_CONSTANT_FR = False  # whether use constant firing rate for shell neurons
 
+UNCORRELATED_FR = {
+    'CP': (1.9, 1.3),
+    'CS': (1.35, 1.2),
+    'FSI': (4.1, 6.0),
+    'LTS': (0.2, 0.8)
+}  # firing rate of shell neurons (mean, stdev)
+UNCORRELATED_FR = pd.DataFrame.from_dict(
+    UNCORRELATED_FR, orient='index', columns=('mean', 'stdev')).rename_axis('pop_name')
+UNCORRELATED_CONSTANT_FR = False  # whether use constant firing rate for shell neurons
+
 
 def num_prop(ratio, N):
     """Calculate numbers of total N in proportion to ratio"""
@@ -721,7 +731,55 @@ def build_input(t_stop=T_STOP, t_start=T_START, n_assemblies=N_ASSEMBLIES,
             json.dump(stim_setting, f, indent=2)
 
     print("Core cells: %.3f sec" % (time.perf_counter() - start_timer))
+    
+    
+    # These inputs are for the UNCORRELATED baseline firing rates of the cells in the 
+    if 'uncorrelated' in nodes:
+        start_timer = time.perf_counter()
 
+        # Generate Poisson spike trains for shell cells
+        psg = PoissonSpikeGenerator(population='uncorrelated', seed=psg_seed + 1000)
+        uncorrelated_nodes = get_populations(nodes['uncorrelated'], pop_names, only_id=True)
+
+        # Select effective nodes in shell that only has connections to core
+        edge_paths = util.load_config("config.json")['networks']['edges']
+        _, uncorrelated_edges = util.load_edges(**next(
+            path for path in edge_paths if 'uncorrelated_cortex' in path['edges_file']))
+        effective_uncorrelated = set(uncorrelated_edges['source_node_id'])
+
+        print("Proportion of effective cells in uncorrelated.")
+        fr_list = []
+        for p, node_ids in uncorrelated_nodes.items():
+            effective_ids = [x for x in node_ids if x in effective_uncorrelated]
+            ratio = len(effective_ids) / len(node_ids)
+            print("%.1f%% effective %s." % (100 * ratio, p))
+
+            fr = UNCORRELATED_FR.loc[p]
+            if UNCORRELATED_CONSTANT_FR:
+                # Constant mean firing rate for all cells
+                psg.add(node_ids=effective_ids,
+                        firing_rate=fr['mean'], times=(0, t_stop))
+            else:
+                # Lognormal distributed mean firing rate
+                fr_list.append([effective_ids, psg_lognormal_fr(psg, effective_ids,
+                    mean=fr['mean'], stdev=fr['stdev'], times=(0, t_stop))])
+
+        UNCORRELATED_FR.to_csv(os.path.join(input_path, "Uncorrelated_FR_stats.csv"))
+        if not UNCORRELATED_CONSTANT_FR:
+            fr_list = {k: np.concatenate(v) for k, v in
+                       zip(['node_id','firing_rate'], zip(*fr_list))}
+            fr_list = pd.DataFrame(fr_list).set_index('node_id')
+            fr_list.to_csv(os.path.join(input_path, "Lognormal_FR_uncorrelated.csv"))
+
+        psg.to_sonata(os.path.join(input_path, "uncorrelated.h5"))
+        print("Uncorrelated cells: %.3f sec" % (time.perf_counter() - start_timer))
+
+    write_seeds_file(psg_seed=psg_seed, net_seed=NET_SEED, stimulus=stimulus,
+                     input_path=input_path, seeds_file_name='random_seeds')
+    print("Done!")
+    
+    
+    
     # These inputs are for the baseline firing rates of the cells in the shell.
     if 'shell' in nodes and 'baseline' in stimulus:
         start_timer = time.perf_counter()
