@@ -100,7 +100,7 @@ def firing_rate(spikes_df, num_cells=None, time_windows=(0.,), frequency=True):
     time_windows: list of time windows for counting spikes (second)
     frequency: whether return firing frequency in Hz or just number of spikes
     """
-    if not spikes_df['timestamps'].is_monotonic:
+    if not spikes_df['timestamps'].is_monotonic_increasing:
         spikes_df = spikes_df.sort_values(by='timestamps')
     if num_cells is None:
         num_cells = spikes_df['node_ids'].max() + 1
