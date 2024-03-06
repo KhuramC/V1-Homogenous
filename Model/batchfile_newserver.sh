@@ -12,8 +12,6 @@
 #SBATCH --mem-per-cpu=8G  # memory per core; default is 1GB/core
 
 ## send mail to this address, alert at start, end and abortion of execution
-##SBATCH --mail-type=ALL
-##SBATCH --mail-user=zc963@mail.missouri.edu
 
 START=$(date)
 echo "Started running at $START."
@@ -21,8 +19,9 @@ echo "Started running at $START."
 export HDF5_USE_FILE_LOCKING=FALSE
 unset DISPLAY
 
-mpirun ./components/mechanisms/x86_64/special -mpi -python run_network.py config_long.json True # args: config file, whether use coreneuron
-
+ 
+mpirun nrniv -mpi -python run_network.py config_long.json False # args: config file, whether use coreneuron
+#mpirun ./components/mechanisms/x86_64/special -mpi -python run_network.py config_long.json False
 END=$(date)
 echo "Done running simulation at $END"
 
