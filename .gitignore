@@ -15,5 +15,6 @@ x86_64/
 /Model/network*/
 /Model/results/
 /Model/input/*.h5
+/Model/input/*.csv
 /Model/input/*/*.h5
 /Model/output/*.*
