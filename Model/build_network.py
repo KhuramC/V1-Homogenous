@@ -1180,15 +1180,10 @@ edge_params = {
     },
     ##########################################################
     ################### UNCORRELATED INPUT ###################
-    
-    #TODO: CHANGE TO USE FUNCTION BASED ON ZIAO'S OUTPUT
     'UNCOR_CP2CP': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
-            #Uncor_CP -> CP total connections [118928(Shell)] / 4000(Total CP in D model) = 29.732
-            #p = 29.732 / [Total CP in uncorrelated]
-            'p': 29.732 / uncor_num_CP,
+            'p': homo_edge_probability_from_D(uni_connections=218265,dist_num_cell_B=dist_num_CP, homo_num_cell_A=uncor_num_CP),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1201,10 +1196,7 @@ edge_params = {
     'UNCOR_CS2CS': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
-            #Uncor_CS -> CS total connections [111505(Shell)] / 4000(Total CS in D model) = 27.87625
-            #p = 27.87625 / [Total CS in uncorrelated]
-            'p': 27.87625 / uncor_num_CS,
+            'p': homo_edge_probability_from_D(uni_connections=82285,dist_num_cell_B=dist_num_CS, homo_num_cell_A=uncor_num_CS),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1217,10 +1209,7 @@ edge_params = {
     'UNCOR_CP2CS': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
-            #Uncor_CP -> CS total connections [14120(shell)] / 4000(Total CS in D model) = 3.53
-            #p = 3.53 / [Total CP in uncorrelated]
-            'p': 3.53 / uncor_num_CP,
+            'p': homo_edge_probability_from_D(uni_connections=13836,dist_num_cell_B=dist_num_CS, homo_num_cell_A=uncor_num_CP),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1233,10 +1222,7 @@ edge_params = {
     'UNCOR_CS2CP': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
-            #Uncor_CS-> CP total connections [156372(shell)] / 4000(Total CP in D model) = 39.093
-            #p = 39.093 / [Total CS in uncorrelated]
-            'p': 39.093 / uncor_num_CS,
+            'p': homo_edge_probability_from_D(uni_connections=120877,dist_num_cell_B=dist_num_CP, homo_num_cell_A=uncor_num_CS),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1249,10 +1235,7 @@ edge_params = {
     'UNCOR_FSI2FSI': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
-            #Uncor_FSI -> FSI total connections [17903(Shell)] / 1200(Total FSI in D model) = 14.91917
-            #p = 14.91917 / [Total FSI in uncorrelated]
-            'p': 14.91917 / uncor_num_FSI,
+            'p': homo_edge_probability_from_D(uni_connections=27265,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=uncor_num_FSI),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1265,10 +1248,7 @@ edge_params = {
     'UNCOR_LTS2LTS': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
-            #Uncor_LTS -> LTS total connections [6149(shell)] / 800(Total LTS in D model) = 7.68625
-            #p = 7.68625 / [Total LTS in uncorrelated]
-            'p': 7.68625 / uncor_num_LTS,
+            'p': homo_edge_probability_from_D(uni_connections=2899,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=uncor_num_LTS),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1281,10 +1261,7 @@ edge_params = {
     'UNCOR_FSI2LTS': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
-            #Uncor_FSI -> LTS total connections [20882(shell)] / 800(Total LTS in D model) = 26.1025
-            #p = 26.1025 / [Total FSI in uncorrelated]
-            'p': 26.1025 / uncor_num_FSI,
+            'p': homo_edge_probability_from_D(uni_connections=5677,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=uncor_num_FSI),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1297,10 +1274,7 @@ edge_params = {
     'UNCOR_LTS2FSI': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
-            #Uncor_LTS -> FSI total connections [32993(shell)] / 1200(Total FSI in D model) = 27.49417
-            #p = 27.49417 / [Total LTS in uncorrelated]
-            'p': 27.49417 / uncor_num_LTS,
+            'p': homo_edge_probability_from_D(uni_connections=11499,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=uncor_num_LTS),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1313,10 +1287,7 @@ edge_params = {
     'UNCOR_CP2FSI': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
-            #Uncor_CP -> FSI total connections [80519(shell)] = / 1200(Total FSI in D model) = 67.09917
-            #p = 67.09917 / [Total CP in uncorrelated]
-            'p': 67.09917 / uncor_num_CP,
+            'p': homo_edge_probability_from_D(uni_connections=27253,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=uncor_num_CP),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1329,10 +1300,7 @@ edge_params = {
     'UNCOR_FSI2CP': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
-            #Uncor_FSI -> CP total connections [80214(shell)] = / 4000(Total CP in D model) = 20.0535 
-            #p = 20.0535 / [Total FSI in uncorrelated]
-            'p': 20.0535 / uncor_num_FSI,
+            'p': homo_edge_probability_from_D(uni_connections=59321,dist_num_cell_B=dist_num_CP, homo_num_cell_A=uncor_num_FSI),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1345,10 +1313,7 @@ edge_params = {
     'UNCOR_CS2FSI': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
-            #Uncor_CS -> FSI total connections [56807(shell)] = / 1200(Total FSI in D model) = 47.33917
-            #p = 47.33917 / [Total CS in uncorrelated]
-            'p': 47.33917 / uncor_num_CS,
+            'p': homo_edge_probability_from_D(uni_connections=32821,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=uncor_num_CS),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1361,10 +1326,7 @@ edge_params = {
     'UNCOR_FSI2CS': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
-            #Uncor_FSI -> CS total connections [63032(shell)] = / 4000(Total CS in D model) = 15.758
-            #p = 15.758 / [Total FSI in uncorrelated]
-            'p': 15.758 / uncor_num_FSI,
+            'p': homo_edge_probability_from_D(uni_connections=53425,dist_num_cell_B=dist_num_CS, homo_num_cell_A=uncor_num_FSI),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1377,10 +1339,7 @@ edge_params = {
     'UNCOR_CP2LTS': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
-            #Uncor_CP -> LTS total connections [46497(shell)] = / 800(Total LTS in D model) = 58.12125
-            #p = 58.12125 / [Total CP in uncorrelated]
-            'p': 58.12125 / uncor_num_CP,
+            'p': homo_edge_probability_from_D(uni_connections=25691,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=uncor_num_CP),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1393,10 +1352,7 @@ edge_params = {
     'UNCOR_LTS2CP': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
-            #Uncor_LTS -> CP total connections [44780(shell)] = / 4000(Total CP in D model) = 11.195
-            #p = 11.195 / [Total LTS in uncorrelated]
-            'p': 11.195 / uncor_num_LTS,
+            'p': homo_edge_probability_from_D(uni_connections=51324,dist_num_cell_B=dist_num_CP, homo_num_cell_A=uncor_num_LTS),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1409,10 +1365,7 @@ edge_params = {
     'UNCOR_CS2LTS': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
-            #Uncor_CS -> LTS total connections [21774(shell)] = / 800(Total LTS in D model) = 27.2175
-            #p = 27.2175 / [Total CS in uncorrelated]
-            'p': 27.2175 / uncor_num_CS,
+            'p': homo_edge_probability_from_D(uni_connections=28674,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=uncor_num_CS),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1425,10 +1378,7 @@ edge_params = {
     'UNCOR_LTS2CS': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
-            #Uncor_LTS -> CS total connections [10440(shell)] = / 4000(Total CS in D model) = 2.61
-            #p = 2.61 / [Total LTS in uncorrelated]
-            'p': 2.61 / uncor_num_LTS,
+            'p': homo_edge_probability_from_D(uni_connections=13068,dist_num_cell_B=dist_num_CS, homo_num_cell_A=uncor_num_LTS),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
