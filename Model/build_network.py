@@ -11,7 +11,7 @@ from connectors import (
     syn_const_delay_feng_section_PN, syn_const_delay, rho_2_pr
 )
 
-from homogenous_probabilities import homo_edge_probability_from_D
+from homogenous_probabilities import homo_edge_probability
 ##############################################################################
 ############################## General Settings ##############################
 
@@ -858,21 +858,13 @@ dist_num_CP, dist_num_CS, dist_num_FSI, dist_num_LTS = num_prop([42.5, 42.5, 8.5
 
 #All connection numbers and values for rho were obtained from the V1_D_build.out file.
 
-#TODO: ASK HOW TO GET RHO VALUE
 edge_params = {
     'CP2CP': {
         'connector_class': ReciprocalConnector,
         'connector_params': {
-            'p0': homo_edge_probability_from_D(uni_connections=447042,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_CP, 
+            'p0': homo_edge_probability(uni_connections=447042,num_cell_B=dist_num_CP, homo_num_cell_A=num_CP, 
                                                rec_connections=95439, connect_to_same_type=True),
-            #rho is last value, gotten from D model.
-            'pr': rho_2_pr(
-                homo_edge_probability_from_D(uni_connections=447042,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_CP, 
-                                               rec_connections=95439, connect_to_same_type=True),
-                homo_edge_probability_from_D(uni_connections=447042,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_CP, 
-                                               rec_connections=95439, connect_to_same_type=True),
-                rho),
-            'estimate_rho': False,
+            'pr': NormalizedReciprocalRate(NRR=3)
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -885,16 +877,9 @@ edge_params = {
     'CS2CS': {
         'connector_class': ReciprocalConnector,
         'connector_params': {
-            'p0': homo_edge_probability_from_D(uni_connections=187667,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_CS, 
+            'p0': homo_edge_probability(uni_connections=187667,num_cell_B=dist_num_CS, homo_num_cell_A=num_CS, 
                                                rec_connections=13118, connect_to_same_type=True),
-            #rho is last value, gotten from D model.
-            'pr': rho_2_pr(
-                homo_edge_probability_from_D(uni_connections=187667,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_CS, 
-                                               rec_connections=13118, connect_to_same_type=True),
-                homo_edge_probability_from_D(uni_connections=187667,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_CS, 
-                                               rec_connections=13118, connect_to_same_type=True),
-                rho),
-            'estimate_rho': False,
+            'pr': NormalizedReciprocalRate(NRR=3)
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -908,12 +893,10 @@ edge_params = {
         'connector_class': ReciprocalConnector,
         'connector_params': {
             #CP->CS
-            'p0': homo_edge_probability_from_D(uni_connections=34034,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_CP),
+            'p0': homo_edge_probability(uni_connections=34034,num_cell_B=dist_num_CS, homo_num_cell_A=num_CP),
             #CS->CP
-            'p1': homo_edge_probability_from_D(uni_connections=303996,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_CS),
-            #rho is last value, gotten from D model.
-            'pr': rho_2_pr(p0,p1,rho),
-            'estimate_rho': False,
+            'p1': homo_edge_probability(uni_connections=303996,num_cell_B=dist_num_CP, homo_num_cell_A=num_CS),
+            'pr': NormalizedReciprocalRate(NRR=3)
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -937,16 +920,9 @@ edge_params = {
     'FSI2FSI': {
         'connector_class': ReciprocalConnector,
         'connector_params': {
-            'p0': homo_edge_probability_from_D(uni_connections=39246,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=num_FSI, 
+            'p0': homo_edge_probability(uni_connections=39246,num_cell_B=dist_num_FSI, homo_num_cell_A=num_FSI, 
                                                rec_connections=27866, connect_to_same_type=True),
-            #rho is last value, gotten from D model.
-            'pr': rho_2_pr(
-                homo_edge_probability_from_D(uni_connections=39246,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=num_FSI, 
-                                               rec_connections=27866, connect_to_same_type=True),
-                homo_edge_probability_from_D(uni_connections=39246,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=num_FSI, 
-                                               rec_connections=27866, connect_to_same_type=True),
-                rho),
-            'estimate_rho': False,
+            'pr': NormalizedReciprocalRate(NRR=3)
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -959,16 +935,9 @@ edge_params = {
     'LTS2LTS': {
         'connector_class': ReciprocalConnector,
         'connector_params': {
-            'p0': homo_edge_probability_from_D(uni_connections=7206,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=num_LTS, 
+            'p0': homo_edge_probability(uni_connections=7206,num_cell_B=dist_num_LTS, homo_num_cell_A=num_LTS, 
                                                rec_connections=753, connect_to_same_type=True),
-            #rho is last value, gotten from D model.
-            'pr': rho_2_pr(
-                homo_edge_probability_from_D(uni_connections=7206,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=num_LTS, 
-                                               rec_connections=753, connect_to_same_type=True),
-                homo_edge_probability_from_D(uni_connections=7206,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=num_LTS, 
-                                               rec_connections=753, connect_to_same_type=True),
-                rho),
-            'estimate_rho': False,
+            'pr': NormalizedReciprocalRate(NRR=3)
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -982,15 +951,10 @@ edge_params = {
         'connector_class': ReciprocalConnector,
         'connector_params': {
             #FSI2LTS
-            'p0': homo_edge_probability_from_D(uni_connections=14573,dist_num_cell_B=dist_num_LTS , homo_num_cell_A=num_FSI),
+            'p0': homo_edge_probability(uni_connections=14573,num_cell_B=dist_num_LTS , homo_num_cell_A=num_FSI),
             #LTS2FSI
-            'p1': homo_edge_probability_from_D(uni_connections=30280,dist_num_cell_B=dist_num_FSI , homo_num_cell_A=num_LTS),
-            #rho is last value, gotten from D model.
-            'pr': rho_2_pr(
-                homo_edge_probability_from_D(uni_connections=14573,dist_num_cell_B=dist_num_LTS , homo_num_cell_A=num_FSI),
-                homo_edge_probability_from_D(uni_connections=30280,dist_num_cell_B=dist_num_FSI , homo_num_cell_A=num_LTS),
-                rho),
-            'estimate_rho': False,
+            'p1': homo_edge_probability(uni_connections=30280,num_cell_B=dist_num_FSI , homo_num_cell_A=num_LTS),
+            'pr': NormalizedReciprocalRate(NRR=3)
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1015,15 +979,10 @@ edge_params = {
         'connector_class': ReciprocalConnector,
         'connector_params': {
             #CP2FSI
-            'p0': homo_edge_probability_from_D(uni_connections=84035,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=num_CP),
+            'p0': homo_edge_probability(uni_connections=84035,num_cell_B=dist_num_FSI, homo_num_cell_A=num_CP),
             #FSI2CP
-            'p1': homo_edge_probability_from_D(uni_connections=191158,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_FSI),
-            #rho is last value, gotten from D model.
-            'pr': rho_2_pr(
-                homo_edge_probability_from_D(uni_connections=84035,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=num_CP),
-                homo_edge_probability_from_D(uni_connections=191158,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_FSI),
-                rho),
-            'estimate_rho': False,
+            'p1': homo_edge_probability(uni_connections=191158,num_cell_B=dist_num_CP, homo_num_cell_A=num_FSI),
+            'pr': NormalizedReciprocalRate(NRR=3)
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1048,15 +1007,10 @@ edge_params = {
         'connector_class': ReciprocalConnector,
         'connector_params': {
             #CS2FSI
-            'p0': homo_edge_probability_from_D(uni_connections=103106,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=num_CS),
+            'p0': homo_edge_probability(uni_connections=103106,num_cell_B=dist_num_FSI, homo_num_cell_A=num_CS),
             #FSI2CS
-            'p1': homo_edge_probability_from_D(uni_connections=168611,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_FSI),
-            #rho is last value, gotten from D model.
-            'pr': rho_2_pr(
-                homo_edge_probability_from_D(uni_connections=103106,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=num_CS),
-                homo_edge_probability_from_D(uni_connections=168611,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_FSI),
-                rho),
-            'estimate_rho': False,
+            'p1': homo_edge_probability(uni_connections=168611,num_cell_B=dist_num_CS, homo_num_cell_A=num_FSI),
+            'pr': NormalizedReciprocalRate(NRR=3)
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1081,15 +1035,10 @@ edge_params = {
         'connector_class': ReciprocalConnector,
         'connector_params': {
             #CP2LTS
-            'p0': homo_edge_probability_from_D(uni_connections=84025,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=num_CP),
+            'p0': homo_edge_probability(uni_connections=84025,num_cell_B=dist_num_LTS, homo_num_cell_A=num_CP),
             #LTS2CP
-            'p1': homo_edge_probability_from_D(uni_connections=179164,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_LTS),
-            #rho is last value, gotten from D model.
-            'pr': rho_2_pr(
-                homo_edge_probability_from_D(uni_connections=84025,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=num_CP),
-                homo_edge_probability_from_D(uni_connections=179164,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_LTS),
-                rho),
-            'estimate_rho': False,
+            'p1': homo_edge_probability(uni_connections=179164,num_cell_B=dist_num_CP, homo_num_cell_A=num_LTS),
+            'pr': NormalizedReciprocalRate(NRR=3)
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1114,15 +1063,10 @@ edge_params = {
         'connector_class': ReciprocalConnector,
         'connector_params': {
             #CS2LTS
-            'p0': homo_edge_probability_from_D(uni_connections=93748,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=num_CS),
+            'p0': homo_edge_probability(uni_connections=93748,num_cell_B=dist_num_LTS, homo_num_cell_A=num_CS),
             #LTS2CS
-            'p1': homo_edge_probability_from_D(uni_connections=44384,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_LTS),
-            #rho is last value, gotten from D model.
-            'pr': rho_2_pr(
-                homo_edge_probability_from_D(uni_connections=93748,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=num_CS),
-                homo_edge_probability_from_D(uni_connections=44384,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_LTS),
-                rho),
-            'estimate_rho': False,
+            'p1': homo_edge_probability(uni_connections=44384,num_cell_B=dist_num_CS, homo_num_cell_A=num_LTS),
+            'pr': NormalizedReciprocalRate(NRR=3)
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1218,7 +1162,7 @@ edge_params = {
     'UNCOR_CP2CP': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            'p': homo_edge_probability_from_D(uni_connections=218265,dist_num_cell_B=dist_num_CP, homo_num_cell_A=uncor_num_CP),
+            'p': homo_edge_probability(uni_connections=218265,num_cell_B=dist_num_CP, homo_num_cell_A=uncor_num_CP),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1231,7 +1175,7 @@ edge_params = {
     'UNCOR_CS2CS': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            'p': homo_edge_probability_from_D(uni_connections=82285,dist_num_cell_B=dist_num_CS, homo_num_cell_A=uncor_num_CS),
+            'p': homo_edge_probability(uni_connections=82285,num_cell_B=dist_num_CS, homo_num_cell_A=uncor_num_CS),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1244,7 +1188,7 @@ edge_params = {
     'UNCOR_CP2CS': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            'p': homo_edge_probability_from_D(uni_connections=13836,dist_num_cell_B=dist_num_CS, homo_num_cell_A=uncor_num_CP),
+            'p': homo_edge_probability(uni_connections=13836,num_cell_B=dist_num_CS, homo_num_cell_A=uncor_num_CP),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1257,7 +1201,7 @@ edge_params = {
     'UNCOR_CS2CP': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            'p': homo_edge_probability_from_D(uni_connections=120877,dist_num_cell_B=dist_num_CP, homo_num_cell_A=uncor_num_CS),
+            'p': homo_edge_probability(uni_connections=120877,num_cell_B=dist_num_CP, homo_num_cell_A=uncor_num_CS),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1270,7 +1214,7 @@ edge_params = {
     'UNCOR_FSI2FSI': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            'p': homo_edge_probability_from_D(uni_connections=27265,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=uncor_num_FSI),
+            'p': homo_edge_probability(uni_connections=27265,num_cell_B=dist_num_FSI, homo_num_cell_A=uncor_num_FSI),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1283,7 +1227,7 @@ edge_params = {
     'UNCOR_LTS2LTS': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            'p': homo_edge_probability_from_D(uni_connections=2899,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=uncor_num_LTS),
+            'p': homo_edge_probability(uni_connections=2899,num_cell_B=dist_num_LTS, homo_num_cell_A=uncor_num_LTS),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1296,7 +1240,7 @@ edge_params = {
     'UNCOR_FSI2LTS': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            'p': homo_edge_probability_from_D(uni_connections=5677,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=uncor_num_FSI),
+            'p': homo_edge_probability(uni_connections=5677,num_cell_B=dist_num_LTS, homo_num_cell_A=uncor_num_FSI),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1309,7 +1253,7 @@ edge_params = {
     'UNCOR_LTS2FSI': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            'p': homo_edge_probability_from_D(uni_connections=11499,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=uncor_num_LTS),
+            'p': homo_edge_probability(uni_connections=11499,num_cell_B=dist_num_FSI, homo_num_cell_A=uncor_num_LTS),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1322,7 +1266,7 @@ edge_params = {
     'UNCOR_CP2FSI': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            'p': homo_edge_probability_from_D(uni_connections=27253,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=uncor_num_CP),
+            'p': homo_edge_probability(uni_connections=27253,num_cell_B=dist_num_FSI, homo_num_cell_A=uncor_num_CP),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1335,7 +1279,7 @@ edge_params = {
     'UNCOR_FSI2CP': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            'p': homo_edge_probability_from_D(uni_connections=59321,dist_num_cell_B=dist_num_CP, homo_num_cell_A=uncor_num_FSI),
+            'p': homo_edge_probability(uni_connections=59321,num_cell_B=dist_num_CP, homo_num_cell_A=uncor_num_FSI),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1348,7 +1292,7 @@ edge_params = {
     'UNCOR_CS2FSI': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            'p': homo_edge_probability_from_D(uni_connections=32821,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=uncor_num_CS),
+            'p': homo_edge_probability(uni_connections=32821,num_cell_B=dist_num_FSI, homo_num_cell_A=uncor_num_CS),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1361,7 +1305,7 @@ edge_params = {
     'UNCOR_FSI2CS': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            'p': homo_edge_probability_from_D(uni_connections=53425,dist_num_cell_B=dist_num_CS, homo_num_cell_A=uncor_num_FSI),
+            'p': homo_edge_probability(uni_connections=53425,num_cell_B=dist_num_CS, homo_num_cell_A=uncor_num_FSI),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1374,7 +1318,7 @@ edge_params = {
     'UNCOR_CP2LTS': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            'p': homo_edge_probability_from_D(uni_connections=25691,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=uncor_num_CP),
+            'p': homo_edge_probability(uni_connections=25691,num_cell_B=dist_num_LTS, homo_num_cell_A=uncor_num_CP),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1387,7 +1331,7 @@ edge_params = {
     'UNCOR_LTS2CP': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            'p': homo_edge_probability_from_D(uni_connections=51324,dist_num_cell_B=dist_num_CP, homo_num_cell_A=uncor_num_LTS),
+            'p': homo_edge_probability(uni_connections=51324,num_cell_B=dist_num_CP, homo_num_cell_A=uncor_num_LTS),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1400,7 +1344,7 @@ edge_params = {
     'UNCOR_CS2LTS': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            'p': homo_edge_probability_from_D(uni_connections=28674,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=uncor_num_CS),
+            'p': homo_edge_probability(uni_connections=28674,num_cell_B=dist_num_LTS, homo_num_cell_A=uncor_num_CS),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1413,7 +1357,7 @@ edge_params = {
     'UNCOR_LTS2CS': {
         'connector_class': UnidirectionConnector,
         'connector_params': {
-            'p': homo_edge_probability_from_D(uni_connections=13068,dist_num_cell_B=dist_num_CS, homo_num_cell_A=uncor_num_LTS),
+            'p': homo_edge_probability(uni_connections=13068,num_cell_B=dist_num_CS, homo_num_cell_A=uncor_num_LTS),
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -1427,7 +1371,6 @@ edge_params = {
 
 # Will be called by conn.add_properties() for the associated connection
 
-#TODO: ASK IF ANYTHING NEEDS TO BE CHANGED WHEN GOING TO HOMOGENOUS
 edge_add_properties = {
     'syn_const_delay_E2E': {
         'names': ['delay', 'afferent_section_id', 'afferent_section_pos'],
@@ -1557,16 +1500,13 @@ if edge_effects:
 
 net = networks['cortex']
 
-#TODO: CHANGE TO BE NON DISTANT-DEPENDENT
 # FSI
 g_gap = 0.00017 # microsiemens
-# gap junction probability correlated with chemical synapse
+# gap junction probability uncorrelated with chemical synapse
+
+FSI_uncorr_p = 0.0450 #gotten from the fact that in V1_build, 4.5% of all possible connections were made.
 gap_junc_FSI = GapJunction(
-    p=GaussianDropoff(
-        stdev=74.28, min_dist=0., max_dist=max_conn_dist,
-        ptotal=0.0744, ptotal_dist_range=(0., 200.), dist_type='cylindrical'
-    ),
-    p_arg=cylindrical_dist_z
+    p=FSI_uncorr_p
 )
 population = net.nodes(pop_name='FSI')
 gap_junc_FSI.setup_nodes(source=population, target=population)
@@ -1580,12 +1520,10 @@ conn = net.add_edges(
 # LTS
 g_gap = 0.00019  # microsiemens
 # gap junction probability uncorrelated with chemical synapse
+
+LTS_uncorr_p = 0.0145 # gotten from the fact that in V1_build, 1.45% of all possible connections were made.
 gap_junc_LTS = GapJunction(
-    p=GaussianDropoff(
-        stdev=74.28, min_dist=0., max_dist=max_conn_dist,
-        ptotal=0.0238, ptotal_dist_range=(0., 200.), dist_type='cylindrical'
-    ),
-    p_arg=cylindrical_dist_z
+    p=LTS_uncorr_p
 )
 population = net.nodes(pop_name='LTS')
 gap_junc_LTS.setup_nodes(source=population, target=population)
