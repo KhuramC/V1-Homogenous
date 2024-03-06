@@ -49,7 +49,6 @@
       "module": "extracellular",
       "electrode_positions": "$BASE_DIR/components/recXelectrodes/single_electrode.csv",
       "file_name": "ecp.h5",
-      "tmp_dir": "$BASE_DIR/ecp_tmp",
       "electrode_channels": "all",
       "minimum_distance": "auto"
     }
