@@ -8,7 +8,7 @@ import connectors
 from connectors import (
     ReciprocalConnector, NormalizedReciprocalRate, UnidirectionConnector,
     OneToOneSequentialConnector, GapJunction,
-    syn_dist_delay_feng_section_PN, syn_dist_delay_feng, rho_2_pr
+    syn_const_delay_feng_section_PN, syn_const_delay, rho_2_pr
 )
 
 from homogenous_probabilities import homo_edge_probability_from_D
@@ -461,7 +461,6 @@ networks = build_networks(network_definitions)
 #   }
 # ]
 
-#TODO: CHANGE NAME TO SYN_CONST_DELAY
 edge_definitions = [
     {   # CP -> CP Reciprocal
         'network': 'cortex',
@@ -470,7 +469,7 @@ edge_definitions = [
             'target': {'pop_name': ['CP']}
         },
         'param': 'CP2CP',
-        'add_properties': 'syn_dist_delay_E2E'
+        'add_properties': 'syn_const_delay_E2E'
     },
     {   # CS -> CS Reciprocal
         'network': 'cortex',
@@ -479,7 +478,7 @@ edge_definitions = [
             'target': {'pop_name': ['CS']}
         },
         'param': 'CS2CS',
-        'add_properties': 'syn_dist_delay_E2E'
+        'add_properties': 'syn_const_delay_E2E'
     },
     {   # CP -> CS Unidirectional
         'network': 'cortex',
@@ -488,7 +487,7 @@ edge_definitions = [
             'target': {'pop_name': ['CS']}
         },
         'param': 'CP2CS',
-        'add_properties': 'syn_dist_delay_E2E'
+        'add_properties': 'syn_const_delay_E2E'
     },
     {   # CS -> CP Unidirectional
         'network': 'cortex',
@@ -497,7 +496,7 @@ edge_definitions = [
             'target': {'pop_name': ['CP']}
         },
         'param': 'CS2CP',
-        'add_properties': 'syn_dist_delay_E2E'
+        'add_properties': 'syn_const_delay_E2E'
     },
     {   # FSI -> FSI Reciprocal
         'network': 'cortex',
@@ -506,7 +505,7 @@ edge_definitions = [
             'target': {'pop_name': ['FSI']}
         },
         'param': 'FSI2FSI',
-        'add_properties': 'syn_dist_delay_FSI'
+        'add_properties': 'syn_const_delay_FSI'
     },
     {   # LTS -> LTS Unidirectional
         'network': 'cortex',
@@ -515,7 +514,7 @@ edge_definitions = [
             'target': {'pop_name': ['LTS']}
         },
         'param': 'LTS2LTS',
-        'add_properties': 'syn_dist_delay_LTS'
+        'add_properties': 'syn_const_delay_LTS'
     },
     {   # FSI -> LTS forward
         'network': 'cortex',
@@ -524,7 +523,7 @@ edge_definitions = [
             'target': {'pop_name': ['LTS']}
         },
         'param': 'FSI2LTS',
-        'add_properties': 'syn_dist_delay_FSI'
+        'add_properties': 'syn_const_delay_FSI'
     },
     {   # FSI <- LTS backward
         'network': 'cortex',
@@ -533,7 +532,7 @@ edge_definitions = [
             'target': {'pop_name': ['FSI']}
         },
         'param': 'LTS2FSI',
-        'add_properties': 'syn_dist_delay_LTS'
+        'add_properties': 'syn_const_delay_LTS'
     },
     {   # CP -> FSI forward
         'network': 'cortex',
@@ -542,7 +541,7 @@ edge_definitions = [
             'target': {'pop_name': ['FSI']}
         },
         'param': 'CP2FSI',
-        'add_properties': 'syn_dist_delay_E2I'
+        'add_properties': 'syn_const_delay_E2I'
     },
     {   # CP <- FSI backward
         'network': 'cortex',
@@ -551,7 +550,7 @@ edge_definitions = [
             'target': {'pop_name': ['CP']}
         },
         'param': 'FSI2CP',
-        'add_properties': 'syn_dist_delay_FSI'
+        'add_properties': 'syn_const_delay_FSI'
     },
     {   # CS -> FSI forward
         'network': 'cortex',
@@ -560,7 +559,7 @@ edge_definitions = [
             'target': {'pop_name': ['FSI']}
         },
         'param': 'CS2FSI',
-        'add_properties': 'syn_dist_delay_E2I'
+        'add_properties': 'syn_const_delay_E2I'
     },
     {   # CS <- FSI backward
         'network': 'cortex',
@@ -569,7 +568,7 @@ edge_definitions = [
             'target': {'pop_name': ['CS']}
         },
         'param': 'FSI2CS',
-        'add_properties': 'syn_dist_delay_FSI'
+        'add_properties': 'syn_const_delay_FSI'
     },
     {   # CP -> LTS forward
         'network': 'cortex',
@@ -578,7 +577,7 @@ edge_definitions = [
             'target': {'pop_name': ['LTS']}
         },
         'param': 'CP2LTS',
-        'add_properties': 'syn_dist_delay_E2I'
+        'add_properties': 'syn_const_delay_E2I'
     },
     {   # CP <- LTS backward
         'network': 'cortex',
@@ -587,7 +586,7 @@ edge_definitions = [
             'target': {'pop_name': ['CP']}
         },
         'param': 'LTS2CP',
-        'add_properties': 'syn_dist_delay_LTS'
+        'add_properties': 'syn_const_delay_LTS'
     },
     {   # CS -> LTS forward
         'network': 'cortex',
@@ -596,7 +595,7 @@ edge_definitions = [
             'target': {'pop_name': ['LTS']}
         },
         'param': 'CS2LTS',
-        'add_properties': 'syn_dist_delay_E2I'
+        'add_properties': 'syn_const_delay_E2I'
     },
     {   # CS <- LTS backward
         'network': 'cortex',
@@ -605,7 +604,7 @@ edge_definitions = [
             'target': {'pop_name': ['CS']}
         },
         'param': 'LTS2CS',
-        'add_properties': 'syn_dist_delay_LTS'
+        'add_properties': 'syn_const_delay_LTS'
     },
         ################### THALAMIC INPUT ###################
     {   # Thalamus Excitation to CP
@@ -673,7 +672,7 @@ edge_definitions = [
             'target_network': 'cortex'
         },
         'param': 'UNCOR_CP2CP',
-    #    'add_properties': 'syn_const_delay_feng_section_PN'
+        'add_properties': 'syn_const_delay_E2E'
     },
     {   #uncorrelated CS -> cortex CS Unidirectional
         'network': 'uncorrelated',
@@ -684,7 +683,7 @@ edge_definitions = [
             'target_network': 'cortex'
         },
         'param': 'UNCOR_CS2CS',
-    #    'add_properties': 'syn_const_delay_feng_section_PN'
+        'add_properties': 'syn_const_delay_E2E'
     },
     {   #uncorrelated CP -> cortex CS Unidirectional
         'network': 'uncorrelated',
@@ -695,7 +694,7 @@ edge_definitions = [
             'target_network': 'cortex'
         },
         'param': 'UNCOR_CP2CS',
-    #    'add_properties': 'syn_const_delay_feng_section_PN'
+        'add_properties': 'syn_const_delay_E2E'
     },
     {   #uncorrelated CS -> cortex CP Unidirectional
         'network': 'uncorrelated',
@@ -706,7 +705,7 @@ edge_definitions = [
             'target_network': 'cortex'
         },
         'param': 'UNCOR_CS2CP',
-    #    'add_properties': 'syn_const_delay_feng_section_PN'
+        'add_properties': 'syn_const_delay_E2E'
     },
     {   #uncorrelated FSI -> cortex FSI Unidirectional
         'network': 'uncorrelated',
@@ -717,7 +716,7 @@ edge_definitions = [
             'target_network': 'cortex'
         },
         'param': 'UNCOR_FSI2FSI',
-    #    'add_properties': 'syn_const_delay_feng_default'
+        'add_properties': 'syn_const_delay_FSI'
     },
     {   #uncorrelated LTS -> cortex LTS Unidirectional
         'network': 'uncorrelated',
@@ -728,9 +727,9 @@ edge_definitions = [
             'target_network': 'cortex'
         },
         'param': 'UNCOR_LTS2LTS',
-    #    'add_properties': 'syn_const_delay_feng_default'
+        'add_properties': 'syn_const_delay_LTS'
     },
-    {   # FSI -> LTS Unidirectional
+    {   #uncorrelated FSI -> LTS Unidirectional
         'network': 'uncorrelated',
         'edge': {
             'source': {'pop_name': ['FSI']},
@@ -739,9 +738,9 @@ edge_definitions = [
             'target_network': 'cortex'
         },
         'param': 'UNCOR_FSI2LTS',
-    #    'add_properties': 'syn_const_delay_feng_default'
+        'add_properties': 'syn_const_delay_FSI'
     },
-    {   #uncorrelated FSI -> cortex LTS Unidirectional
+    {   #uncorrelated LTS -> cortex FSI Unidirectional
         'network': 'uncorrelated',
         'edge': {
             'source': {'pop_name': ['LTS']},
@@ -750,7 +749,7 @@ edge_definitions = [
             'target_network': 'cortex'
         },
         'param': 'UNCOR_LTS2FSI',
-    #    'add_properties': 'syn_const_delay_feng_default'
+        'add_properties': 'syn_const_delay_LTS'
     },
     {   #uncorrelated CP -> cortex FSI Unidirectional
         'network': 'uncorrelated',
@@ -761,9 +760,9 @@ edge_definitions = [
             'target_network': 'cortex'
         },
         'param': 'UNCOR_CP2FSI',
-    #    'add_properties': 'syn_const_delay_feng_default'
+        'add_properties': 'syn_const_delay_E2I'
     },
-    {   #uncorrelated CP -> cortex FSI Unidirectional
+    {   #uncorrelated FSI -> cortex CP Unidirectional
         'network': 'uncorrelated',
         'edge': {
             'source': {'pop_name': ['FSI']},
@@ -772,7 +771,7 @@ edge_definitions = [
             'target_network': 'cortex'
         },
         'param': 'UNCOR_FSI2CP',
-    #    'add_properties': 'syn_const_delay_feng_default'
+        'add_properties': 'syn_const_delay_FSI'
     },
     {   #uncorrelated CS -> cortex FSI Unidirectional
         'network': 'uncorrelated',
@@ -783,9 +782,9 @@ edge_definitions = [
             'target_network': 'cortex'
         },
         'param': 'UNCOR_CS2FSI',
-    #    'add_properties': 'syn_const_delay_feng_default'
+        'add_properties': 'syn_const_delay_E2I'
     },
-    {   #uncorrelated CS -> cortex FSI Unidirectional
+    {   #uncorrelated FSI -> cortex CS Unidirectional
         'network': 'uncorrelated',
         'edge': {
             'source': {'pop_name': ['FSI']},
@@ -794,7 +793,7 @@ edge_definitions = [
             'target_network': 'cortex'
         },
         'param': 'UNCOR_FSI2CS',
-     #   'add_properties': 'syn_const_delay_feng_default'
+        'add_properties': 'syn_const_delay_FSI'
     },
     {   #uncorrelated CP -> cortex LTS Unidirectional
         'network': 'uncorrelated',
@@ -805,9 +804,9 @@ edge_definitions = [
             'target_network': 'cortex'
         },
         'param': 'UNCOR_CP2LTS',
-      #  'add_properties': 'syn_const_delay_feng_default'
+        'add_properties': 'syn_const_delay_E2I'
     },
-    {   #uncorrelated CP -> cortex LTS Unidirectional
+    {   #uncorrelated LTS -> cortex CP Unidirectional
         'network': 'uncorrelated',
         'edge': {
             'source': {'pop_name': ['LTS']},
@@ -816,7 +815,7 @@ edge_definitions = [
             'target_network': 'cortex'
         },
         'param': 'UNCOR_LTS2CP',
-     #   'add_properties': 'syn_const_delay_feng_default'
+        'add_properties': 'syn_const_delay_LTS'
     },
     {   #uncorrelated CS -> cortex LTS Unidirectional
         'network': 'uncorrelated',
@@ -827,9 +826,9 @@ edge_definitions = [
             'target_network': 'cortex'
         },
         'param': 'UNCOR_CS2LTS',
-       # 'add_properties': 'syn_const_delay_feng_default'
+        'add_properties': 'syn_const_delay_E2I'
     },
-    {   #uncorrelated CS -> cortex LTS Unidirectional
+    {   #uncorrelated LTS -> cortex CS Unidirectional
         'network': 'uncorrelated',
         'edge': {
             'source': {'pop_name': ['LTS']},
@@ -838,7 +837,7 @@ edge_definitions = [
             'target_network': 'cortex'
         },
         'param': 'UNCOR_LTS2CS',
-      #  'add_properties': 'syn_const_delay_feng_default'
+        'add_properties': 'syn_const_delay_LTS'
     },
 ]
 
@@ -859,6 +858,7 @@ dist_num_CP, dist_num_CS, dist_num_FSI, dist_num_LTS = num_prop([42.5, 42.5, 8.5
 
 #All connection numbers and values for rho were obtained from the V1_D_build.out file.
 
+#TODO: ASK HOW TO GET RHO VALUE
 edge_params = {
     'CP2CP': {
         'connector_class': ReciprocalConnector,
@@ -1427,32 +1427,32 @@ edge_params = {
 
 # Will be called by conn.add_properties() for the associated connection
 
-#TODO: CHANGE TO BE SYN_CONST DELAY, BOTH ACTUALLY AND IN NAME
+#TODO: ASK IF ANYTHING NEEDS TO BE CHANGED WHEN GOING TO HOMOGENOUS
 edge_add_properties = {
-    'syn_dist_delay_E2E': {
+    'syn_const_delay_E2E': {
         'names': ['delay', 'afferent_section_id', 'afferent_section_pos'],
-        'rule': syn_dist_delay_feng_section_PN,
+        'rule': syn_const_delay_feng_section_PN,
         'rule_params': {
             'p': 0.9, 'sec_id': (1, 2), 'sec_x': (0.4, 0.6),
             'min_delay': 1.6, 'delay_bound': (0.2, 2.4)
         },
         'dtypes': [float, np.uint16, float]
     },
-    'syn_dist_delay_E2I': {
+    'syn_const_delay_E2I': {
         'names': 'delay',
-        'rule': syn_dist_delay_feng,
+        'rule': syn_const_delay,
         'rule_params': {'min_delay': 1.2},
         'dtypes': float
     },
-    'syn_dist_delay_FSI': {
+    'syn_const_delay_FSI': {
         'names': 'delay',
-        'rule': syn_dist_delay_feng,
+        'rule': syn_const_delay,
         'rule_params': {'min_delay': 0.8},
         'dtypes': float
     },
-    'syn_dist_delay_LTS': {
+    'syn_const_delay_LTS': {
         'names': 'delay',
-        'rule': syn_dist_delay_feng,
+        'rule': syn_const_delay,
         'rule_params': {'min_delay': 1.1},
         'dtypes': float
     }
