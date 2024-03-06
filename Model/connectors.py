@@ -1481,7 +1481,8 @@ DELAY_UPBOUND = 2.0  # ms
 
 def syn_const_delay(source=None, target = None, dist=100, 
                     min_delay=SYN_MIN_DELAY, velocity=SYN_VELOCITY,
-                    fluc_stdev=FLUC_STDEV, connector=None): 
+                    fluc_stdev=FLUC_STDEV, delay_bound=(DELAY_LOWBOUND, DELAY_UPBOUND),
+                    connector=None): 
     """Synapse delay constant with some random fluctuation.
     """
     del_fluc = fluc_stdev * rng.normal()
