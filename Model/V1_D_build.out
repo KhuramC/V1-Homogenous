@@ -1,0 +1,504 @@
+Started running at Tue Feb 27 02:21:10 CST 2024.
+Cell numbers: CP=4250, CS=4250, FSI=850, LTS=650
+Number of positions in core: 12165
+Number of cells in core: 10000
+Number of positions in shell: 37139
+Number of cells in shell: 30000
+Adding edge: CP2CP
+Adding edge: CS2CS
+Adding edge: CP2CS
+Adding edge: CS2CP
+Adding edge: FSI2FSI
+Adding edge: LTS2LTS
+Adding edge: FSI2LTS
+Adding edge: LTS2FSI
+Adding edge: CP2FSI
+Adding edge: FSI2CP
+Adding edge: CS2FSI
+Adding edge: FSI2CS
+Adding edge: CP2LTS
+Adding edge: LTS2CP
+Adding edge: CS2LTS
+Adding edge: LTS2CS
+Adding edge: Thal2CP
+Adding edge: Thal2CS
+All target population partitions are filled.
+Adding edge: Base2CP
+Adding edge: Base2CS
+Adding edge: Base2FSI
+Adding edge: Base2LTS
+All target population partitions are filled.
+
+Shell edges:
+{'network': 'cortex', 'edge': {'source': {'pop_name': ['CP']}, 'target': {'pop_name': ['CP']}, 'source_network': 'shell'}, 'param': 'shellCP2CP', 'add_properties': 'syn_dist_delay_E2E'}
+{'network': 'cortex', 'edge': {'source': {'pop_name': ['CS']}, 'target': {'pop_name': ['CS']}, 'source_network': 'shell'}, 'param': 'shellCS2CS', 'add_properties': 'syn_dist_delay_E2E'}
+{'network': 'cortex', 'edge': {'source': {'pop_name': ['CP']}, 'target': {'pop_name': ['CS']}, 'source_network': 'shell'}, 'param': 'shellCP2CS', 'add_properties': 'syn_dist_delay_E2E'}
+{'network': 'cortex', 'edge': {'source': {'pop_name': ['CS']}, 'target': {'pop_name': ['CP']}, 'source_network': 'shell'}, 'param': 'shellCS2CP', 'add_properties': 'syn_dist_delay_E2E'}
+{'network': 'cortex', 'edge': {'source': {'pop_name': ['FSI']}, 'target': {'pop_name': ['FSI']}, 'source_network': 'shell'}, 'param': 'shellFSI2FSI', 'add_properties': 'syn_dist_delay_FSI'}
+{'network': 'cortex', 'edge': {'source': {'pop_name': ['LTS']}, 'target': {'pop_name': ['LTS']}, 'source_network': 'shell'}, 'param': 'shellLTS2LTS', 'add_properties': 'syn_dist_delay_LTS'}
+{'network': 'cortex', 'edge': {'source': {'pop_name': ['FSI']}, 'target': {'pop_name': ['LTS']}, 'source_network': 'shell'}, 'param': 'shellFSI2LTS', 'add_properties': 'syn_dist_delay_FSI'}
+{'network': 'cortex', 'edge': {'source': {'pop_name': ['LTS']}, 'target': {'pop_name': ['FSI']}, 'source_network': 'shell'}, 'param': 'shellLTS2FSI', 'add_properties': 'syn_dist_delay_LTS'}
+{'network': 'cortex', 'edge': {'source': {'pop_name': ['CP']}, 'target': {'pop_name': ['FSI']}, 'source_network': 'shell'}, 'param': 'shellCP2FSI', 'add_properties': 'syn_dist_delay_E2I'}
+{'network': 'cortex', 'edge': {'source': {'pop_name': ['FSI']}, 'target': {'pop_name': ['CP']}, 'source_network': 'shell'}, 'param': 'shellFSI2CP', 'add_properties': 'syn_dist_delay_FSI'}
+{'network': 'cortex', 'edge': {'source': {'pop_name': ['CS']}, 'target': {'pop_name': ['FSI']}, 'source_network': 'shell'}, 'param': 'shellCS2FSI', 'add_properties': 'syn_dist_delay_E2I'}
+{'network': 'cortex', 'edge': {'source': {'pop_name': ['FSI']}, 'target': {'pop_name': ['CS']}, 'source_network': 'shell'}, 'param': 'shellFSI2CS', 'add_properties': 'syn_dist_delay_FSI'}
+{'network': 'cortex', 'edge': {'source': {'pop_name': ['CP']}, 'target': {'pop_name': ['LTS']}, 'source_network': 'shell'}, 'param': 'shellCP2LTS', 'add_properties': 'syn_dist_delay_E2I'}
+{'network': 'cortex', 'edge': {'source': {'pop_name': ['LTS']}, 'target': {'pop_name': ['CP']}, 'source_network': 'shell'}, 'param': 'shellLTS2CP', 'add_properties': 'syn_dist_delay_LTS'}
+{'network': 'cortex', 'edge': {'source': {'pop_name': ['CS']}, 'target': {'pop_name': ['LTS']}, 'source_network': 'shell'}, 'param': 'shellCS2LTS', 'add_properties': 'syn_dist_delay_E2I'}
+{'network': 'cortex', 'edge': {'source': {'pop_name': ['LTS']}, 'target': {'pop_name': ['CS']}, 'source_network': 'shell'}, 'param': 'shellLTS2CS', 'add_properties': 'syn_dist_delay_LTS'}
+
+Shell edge parameters:
+shellCP2CP:
+{'connector_class': <class 'connectors.UnidirectionConnector'>, 'connector_params': {'p': <connectors.GaussianDropoff object at 0x7fca45022610>, 'p_arg': <function cylindrical_dist_z at 0x7fca44d98820>, 'n_syn': 1, 'verbose': True}, 'weight_function': 'lognormal_weight', 'syn_weight': 1.0, 'weight_sigma': 0.8, 'sigma_upper_bound': 3.0, 'afferent_section_id': 1, 'afferent_section_pos': 0.4, 'dynamics_params': 'CP2CP.json'}
+shellCS2CS:
+{'connector_class': <class 'connectors.UnidirectionConnector'>, 'connector_params': {'p': <connectors.GaussianDropoff object at 0x7fca44d5b070>, 'p_arg': <function cylindrical_dist_z at 0x7fca44d98820>, 'n_syn': 1, 'verbose': True}, 'weight_function': 'lognormal_weight', 'syn_weight': 1.0, 'weight_sigma': 0.8, 'sigma_upper_bound': 3.0, 'afferent_section_id': 1, 'afferent_section_pos': 0.4, 'dynamics_params': 'CS2CS.json'}
+shellCP2CS:
+{'connector_class': <class 'connectors.UnidirectionConnector'>, 'connector_params': {'p': <connectors.GaussianDropoff object at 0x7fca44d5b040>, 'p_arg': <function cylindrical_dist_z at 0x7fca44d98820>, 'n_syn': 1, 'verbose': True}, 'weight_function': 'lognormal_weight', 'syn_weight': 1.0, 'weight_sigma': 0.8, 'sigma_upper_bound': 3.0, 'afferent_section_id': 1, 'afferent_section_pos': 0.4, 'dynamics_params': 'CP2CS.json'}
+shellCS2CP:
+{'connector_class': <class 'connectors.UnidirectionConnector'>, 'connector_params': {'p': <connectors.GaussianDropoff object at 0x7fca44d5b7f0>, 'p_arg': <function cylindrical_dist_z at 0x7fca44d98820>, 'n_syn': 1, 'verbose': True}, 'weight_function': 'lognormal_weight', 'syn_weight': 1.0, 'weight_sigma': 0.8, 'sigma_upper_bound': 3.0, 'afferent_section_id': 1, 'afferent_section_pos': 0.4, 'dynamics_params': 'CS2CP.json'}
+shellFSI2FSI:
+{'connector_class': <class 'connectors.UnidirectionConnector'>, 'connector_params': {'p': <connectors.GaussianDropoff object at 0x7fca44d5b0a0>, 'p_arg': <function cylindrical_dist_z at 0x7fca44d98820>, 'n_syn': 1, 'verbose': True}, 'weight_function': 'lognormal_weight', 'syn_weight': 1.0, 'weight_sigma': 0.8, 'sigma_upper_bound': 3.0, 'afferent_section_id': 0, 'afferent_section_pos': 0.5, 'dynamics_params': 'FSI2FSI.json'}
+shellLTS2LTS:
+{'connector_class': <class 'connectors.UnidirectionConnector'>, 'connector_params': {'p': <connectors.GaussianDropoff object at 0x7fca4502fc70>, 'p_arg': <function cylindrical_dist_z at 0x7fca44d98820>, 'n_syn': 1, 'verbose': True}, 'weight_function': 'lognormal_weight', 'syn_weight': 1.0, 'weight_sigma': 0.8, 'sigma_upper_bound': 3.0, 'afferent_section_id': 0, 'afferent_section_pos': 0.5, 'dynamics_params': 'LTS2LTS.json'}
+shellFSI2LTS:
+{'connector_class': <class 'connectors.UnidirectionConnector'>, 'connector_params': {'p': <connectors.GaussianDropoff object at 0x7fca4502fb50>, 'p_arg': <function cylindrical_dist_z at 0x7fca44d98820>, 'n_syn': 1, 'verbose': True}, 'weight_function': 'lognormal_weight', 'syn_weight': 1.0, 'weight_sigma': 0.8, 'sigma_upper_bound': 3.0, 'afferent_section_id': 0, 'afferent_section_pos': 0.5, 'dynamics_params': 'FSI2LTS.json'}
+shellLTS2FSI:
+{'connector_class': <class 'connectors.UnidirectionConnector'>, 'connector_params': {'p': <connectors.GaussianDropoff object at 0x7fca4502f970>, 'p_arg': <function cylindrical_dist_z at 0x7fca44d98820>, 'n_syn': 1, 'verbose': True}, 'weight_function': 'lognormal_weight', 'syn_weight': 1.0, 'weight_sigma': 0.8, 'sigma_upper_bound': 3.0, 'afferent_section_id': 0, 'afferent_section_pos': 0.5, 'dynamics_params': 'LTS2FSI.json'}
+shellCP2FSI:
+{'connector_class': <class 'connectors.UnidirectionConnector'>, 'connector_params': {'p': <connectors.GaussianDropoff object at 0x7fca4502fb20>, 'p_arg': <function cylindrical_dist_z at 0x7fca44d98820>, 'n_syn': 1, 'verbose': True}, 'weight_function': 'lognormal_weight', 'syn_weight': 1.0, 'weight_sigma': 0.8, 'sigma_upper_bound': 3.0, 'afferent_section_id': 1, 'afferent_section_pos': 0.5, 'dynamics_params': 'CP2FSI.json'}
+shellFSI2CP:
+{'connector_class': <class 'connectors.UnidirectionConnector'>, 'connector_params': {'p': <connectors.GaussianDropoff object at 0x7fca4502f4c0>, 'p_arg': <function cylindrical_dist_z at 0x7fca44d98820>, 'n_syn': 1, 'verbose': True}, 'weight_function': 'lognormal_weight', 'syn_weight': 1.0, 'weight_sigma': 0.8, 'sigma_upper_bound': 3.0, 'afferent_section_id': 0, 'afferent_section_pos': 0.5, 'dynamics_params': 'FSI2CP.json'}
+shellCS2FSI:
+{'connector_class': <class 'connectors.UnidirectionConnector'>, 'connector_params': {'p': <connectors.GaussianDropoff object at 0x7fca4502faf0>, 'p_arg': <function cylindrical_dist_z at 0x7fca44d98820>, 'n_syn': 1, 'verbose': True}, 'weight_function': 'lognormal_weight', 'syn_weight': 1.0, 'weight_sigma': 0.8, 'sigma_upper_bound': 3.0, 'afferent_section_id': 1, 'afferent_section_pos': 0.5, 'dynamics_params': 'CS2FSI.json'}
+shellFSI2CS:
+{'connector_class': <class 'connectors.UnidirectionConnector'>, 'connector_params': {'p': <connectors.GaussianDropoff object at 0x7fca4502f1c0>, 'p_arg': <function cylindrical_dist_z at 0x7fca44d98820>, 'n_syn': 1, 'verbose': True}, 'weight_function': 'lognormal_weight', 'syn_weight': 1.0, 'weight_sigma': 0.8, 'sigma_upper_bound': 3.0, 'afferent_section_id': 0, 'afferent_section_pos': 0.5, 'dynamics_params': 'FSI2CS.json'}
+shellCP2LTS:
+{'connector_class': <class 'connectors.UnidirectionConnector'>, 'connector_params': {'p': <connectors.GaussianDropoff object at 0x7fca4502fcd0>, 'p_arg': <function cylindrical_dist_z at 0x7fca44d98820>, 'n_syn': 1, 'verbose': True}, 'weight_function': 'lognormal_weight', 'syn_weight': 1.0, 'weight_sigma': 0.8, 'sigma_upper_bound': 3.0, 'afferent_section_id': 1, 'afferent_section_pos': 0.5, 'dynamics_params': 'CP2LTS.json'}
+shellLTS2CP:
+{'connector_class': <class 'connectors.UnidirectionConnector'>, 'connector_params': {'p': <connectors.GaussianDropoff object at 0x7fca4502fe80>, 'p_arg': <function cylindrical_dist_z at 0x7fca44d98820>, 'n_syn': 1, 'verbose': True}, 'weight_function': 'lognormal_weight', 'syn_weight': 1.0, 'weight_sigma': 0.8, 'sigma_upper_bound': 3.0, 'afferent_section_id': 2, 'afferent_section_pos': 0.8, 'dynamics_params': 'LTS2CP.json'}
+shellCS2LTS:
+{'connector_class': <class 'connectors.UnidirectionConnector'>, 'connector_params': {'p': <connectors.GaussianDropoff object at 0x7fca4502f370>, 'p_arg': <function cylindrical_dist_z at 0x7fca44d98820>, 'n_syn': 1, 'verbose': True}, 'weight_function': 'lognormal_weight', 'syn_weight': 1.0, 'weight_sigma': 0.8, 'sigma_upper_bound': 3.0, 'afferent_section_id': 1, 'afferent_section_pos': 0.5, 'dynamics_params': 'CS2LTS.json'}
+shellLTS2CS:
+{'connector_class': <class 'connectors.UnidirectionConnector'>, 'connector_params': {'p': <connectors.GaussianDropoff object at 0x7fca4502f910>, 'p_arg': <function cylindrical_dist_z at 0x7fca44d98820>, 'n_syn': 1, 'verbose': True}, 'weight_function': 'lognormal_weight', 'syn_weight': 1.0, 'weight_sigma': 0.8, 'sigma_upper_bound': 3.0, 'afferent_section_id': 2, 'afferent_section_pos': 0.8, 'dynamics_params': 'LTS2CS.json'}
+
+Adding edge: shellCP2CP
+Adding edge: shellCS2CS
+Adding edge: shellCP2CS
+Adding edge: shellCS2CP
+Adding edge: shellFSI2FSI
+Adding edge: shellLTS2LTS
+Adding edge: shellFSI2LTS
+Adding edge: shellLTS2FSI
+Adding edge: shellCP2FSI
+Adding edge: shellFSI2CP
+Adding edge: shellCS2FSI
+Adding edge: shellFSI2CS
+Adding edge: shellCP2LTS
+Adding edge: shellLTS2CP
+Adding edge: shellCS2LTS
+Adding edge: shellLTS2CS
+Building cortex
+
+Start building connection between: 
+  cortex: pop_name=='['CP']'
+  cortex: pop_name=='['CP']'
+Total time for creating connection matrix: 80.421 sec
+Numbers of (all, reciprocal) connections:
+Number of connected pairs: (447042, 95439)
+Number of possible connections: (4365183)
+Fraction of connected pairs in possible ones: (10.24%, 2.19%)
+Number of total pairs: 9029125
+Fraction of connected pairs in all pairs: (4.95%, 1.06%)
+
+Assigning forward connections.
+Done! 
+Time for building connections: 4.190 sec
+
+Start building connection between: 
+  cortex: pop_name=='['CS']'
+  cortex: pop_name=='['CS']'
+Total time for creating connection matrix: 79.993 sec
+Numbers of (all, reciprocal) connections:
+Number of connected pairs: (187667, 13118)
+Number of possible connections: (4317667)
+Fraction of connected pairs in possible ones: (4.35%, 0.30%)
+Number of total pairs: 9029125
+Fraction of connected pairs in all pairs: (2.08%, 0.15%)
+
+Assigning forward connections.
+Done! 
+Time for building connections: 3.542 sec
+
+Start building connection between: 
+  cortex: pop_name=='['CP']'
+  cortex: pop_name=='['CS']'
+Total time for creating connection matrix: 188.626 sec
+Numbers of (forward, backward, reciprocal) connections:
+Number of connected pairs: (34034, 303996, 6711)
+Number of possible connections: (8683245, 8683245, 8683245)
+Fraction of connected pairs in possible ones: (0.39%, 3.50%, 0.08%)
+Number of total pairs: 18062500
+Fraction of connected pairs in all pairs: (0.19%, 1.68%, 0.04%)
+
+Assigning forward connections.
+Assigning backward connections.
+Done! 
+Time for building connections: 33.513 sec
+
+Start building connection between: 
+  cortex: pop_name=='['FSI']'
+  cortex: pop_name=='['FSI']'
+Total time for creating connection matrix: 3.294 sec
+Warning: Value of 'pr' outside the bounds occurred.
+
+Numbers of (all, reciprocal) connections:
+Number of connected pairs: (39246, 27866)
+Number of possible connections: (173210)
+Fraction of connected pairs in possible ones: (22.66%, 16.09%)
+Number of total pairs: 360825
+Fraction of connected pairs in all pairs: (10.88%, 7.72%)
+
+Assigning forward connections.
+Done! 
+Time for building connections: 0.250 sec
+
+Start building connection between: 
+  cortex: pop_name=='['LTS']'
+  cortex: pop_name=='['LTS']'
+Total time for creating connection matrix: 1.879 sec
+Numbers of (all, reciprocal) connections:
+Number of connected pairs: (7206, 753)
+Number of possible connections: (104738)
+Fraction of connected pairs in possible ones: (6.88%, 0.72%)
+Number of total pairs: 210925
+Fraction of connected pairs in all pairs: (3.42%, 0.36%)
+
+Assigning forward connections.
+Done! 
+Time for building connections: 0.088 sec
+
+Start building connection between: 
+  cortex: pop_name=='['FSI']'
+  cortex: pop_name=='['LTS']'
+Total time for creating connection matrix: 5.872 sec
+Warning: Value of 'pr' outside the bounds occurred.
+
+Numbers of (forward, backward, reciprocal) connections:
+Number of connected pairs: (14573, 30280, 7942)
+Number of possible connections: (270199, 270199, 270199)
+Fraction of connected pairs in possible ones: (5.39%, 11.21%, 2.94%)
+Number of total pairs: 552500
+Fraction of connected pairs in all pairs: (2.64%, 5.48%, 1.44%)
+
+Assigning forward connections.
+Assigning backward connections.
+Done! 
+Time for building connections: 1.188 sec
+
+Start building connection between: 
+  cortex: pop_name=='['CP']'
+  cortex: pop_name=='['FSI']'
+Total time for creating connection matrix: 38.376 sec
+Warning: Value of 'pr' outside the bounds occurred.
+
+Numbers of (forward, backward, reciprocal) connections:
+Number of connected pairs: (84035, 191158, 59859)
+Number of possible connections: (1741432, 1741432, 1741432)
+Fraction of connected pairs in possible ones: (4.83%, 10.98%, 3.44%)
+Number of total pairs: 3612500
+Fraction of connected pairs in all pairs: (2.33%, 5.29%, 1.66%)
+
+Assigning forward connections.
+Assigning backward connections.
+Done! 
+Time for building connections: 7.428 sec
+
+Start building connection between: 
+  cortex: pop_name=='['CS']'
+  cortex: pop_name=='['FSI']'
+Total time for creating connection matrix: 38.218 sec
+Warning: Value of 'pr' outside the bounds occurred.
+
+Numbers of (forward, backward, reciprocal) connections:
+Number of connected pairs: (103106, 168611, 67108)
+Number of possible connections: (1731872, 1731872, 1731872)
+Fraction of connected pairs in possible ones: (5.95%, 9.74%, 3.87%)
+Number of total pairs: 3612500
+Fraction of connected pairs in all pairs: (2.85%, 4.67%, 1.86%)
+
+Assigning forward connections.
+Assigning backward connections.
+Done! 
+Time for building connections: 7.590 sec
+
+Start building connection between: 
+  cortex: pop_name=='['CP']'
+  cortex: pop_name=='['LTS']'
+Total time for creating connection matrix: 29.658 sec
+Warning: Value of 'pr' outside the bounds occurred.
+
+Numbers of (forward, backward, reciprocal) connections:
+Number of connected pairs: (84025, 179164, 66244)
+Number of possible connections: (1355066, 1355066, 1355066)
+Fraction of connected pairs in possible ones: (6.20%, 13.22%, 4.89%)
+Number of total pairs: 2762500
+Fraction of connected pairs in all pairs: (3.04%, 6.49%, 2.40%)
+
+Assigning forward connections.
+Assigning backward connections.
+Done! 
+Time for building connections: 5.911 sec
+
+Start building connection between: 
+  cortex: pop_name=='['CS']'
+  cortex: pop_name=='['LTS']'
+Total time for creating connection matrix: 29.328 sec
+Numbers of (forward, backward, reciprocal) connections:
+Number of connected pairs: (93748, 44384, 21120)
+Number of possible connections: (1345791, 1345791, 1345791)
+Fraction of connected pairs in possible ones: (6.97%, 3.30%, 1.57%)
+Number of total pairs: 2762500
+Fraction of connected pairs in all pairs: (3.39%, 1.61%, 0.76%)
+
+Assigning forward connections.
+Assigning backward connections.
+Done! 
+Time for building connections: 5.741 sec
+
+Start building connection from thalamus: *
+  0. to cortex: pop_name=='['CP']'
+    Time for this partition: 13.005 sec
+  1. to cortex: pop_name=='['CS']'
+    Time for this partition: 12.842 sec
+Done! 
+Time for building connections: 25.910 sec
+
+Start building connection from baseline: *
+  0. to cortex: pop_name=='['CP']'
+    Time for this partition: 15.009 sec
+  1. to cortex: pop_name=='['CS']'
+    Time for this partition: 14.779 sec
+  2. to cortex: pop_name=='['FSI']'
+    Time for this partition: 2.930 sec
+  3. to cortex: pop_name=='['LTS']'
+    Time for this partition: 2.263 sec
+Done! 
+Time for building connections: 35.154 sec
+
+Start building connection 
+  from shell: pop_name=='['CP']'
+  to cortex: pop_name=='['CP']'
+Number of connected pairs: 218265
+Number of possible connections: 5404463
+Fraction of connected pairs in possible ones: 4.04%
+Number of total pairs: 54187500
+Fraction of connected pairs in all pairs: 0.40%
+
+Done! 
+Time for building connections: 339.091 sec
+
+Start building connection 
+  from shell: pop_name=='['CS']'
+  to cortex: pop_name=='['CS']'
+Number of connected pairs: 82285
+Number of possible connections: 5397618
+Fraction of connected pairs in possible ones: 1.52%
+Number of total pairs: 54187500
+Fraction of connected pairs in all pairs: 0.15%
+
+Done! 
+Time for building connections: 336.787 sec
+
+Start building connection 
+  from shell: pop_name=='['CP']'
+  to cortex: pop_name=='['CS']'
+Number of connected pairs: 13836
+Number of possible connections: 5452459
+Fraction of connected pairs in possible ones: 0.25%
+Number of total pairs: 54187500
+Fraction of connected pairs in all pairs: 0.03%
+
+Done! 
+Time for building connections: 335.669 sec
+
+Start building connection 
+  from shell: pop_name=='['CS']'
+  to cortex: pop_name=='['CP']'
+Number of connected pairs: 120877
+Number of possible connections: 5349845
+Fraction of connected pairs in possible ones: 2.26%
+Number of total pairs: 54187500
+Fraction of connected pairs in all pairs: 0.22%
+
+Done! 
+Time for building connections: 334.326 sec
+
+Start building connection 
+  from shell: pop_name=='['FSI']'
+  to cortex: pop_name=='['FSI']'
+Number of connected pairs: 27265
+Number of possible connections: 217292
+Fraction of connected pairs in possible ones: 12.55%
+Number of total pairs: 2167500
+Fraction of connected pairs in all pairs: 1.26%
+
+Done! 
+Time for building connections: 13.550 sec
+
+Start building connection 
+  from shell: pop_name=='['LTS']'
+  to cortex: pop_name=='['LTS']'
+Number of connected pairs: 2899
+Number of possible connections: 119344
+Fraction of connected pairs in possible ones: 2.43%
+Number of total pairs: 1267500
+Fraction of connected pairs in all pairs: 0.23%
+
+Done! 
+Time for building connections: 7.858 sec
+
+Start building connection 
+  from shell: pop_name=='['FSI']'
+  to cortex: pop_name=='['LTS']'
+Number of connected pairs: 5677
+Number of possible connections: 161872
+Fraction of connected pairs in possible ones: 3.51%
+Number of total pairs: 1657500
+Fraction of connected pairs in all pairs: 0.34%
+
+Done! 
+Time for building connections: 10.273 sec
+
+Start building connection 
+  from shell: pop_name=='['LTS']'
+  to cortex: pop_name=='['FSI']'
+Number of connected pairs: 11499
+Number of possible connections: 159982
+Fraction of connected pairs in possible ones: 7.19%
+Number of total pairs: 1657500
+Fraction of connected pairs in all pairs: 0.69%
+
+Done! 
+Time for building connections: 10.293 sec
+
+Start building connection 
+  from shell: pop_name=='['CP']'
+  to cortex: pop_name=='['FSI']'
+Number of connected pairs: 27253
+Number of possible connections: 1086011
+Fraction of connected pairs in possible ones: 2.51%
+Number of total pairs: 10837500
+Fraction of connected pairs in all pairs: 0.25%
+
+Done! 
+Time for building connections: 67.377 sec
+
+Start building connection 
+  from shell: pop_name=='['FSI']'
+  to cortex: pop_name=='['CP']'
+Number of connected pairs: 59321
+Number of possible connections: 1081395
+Fraction of connected pairs in possible ones: 5.49%
+Number of total pairs: 10837500
+Fraction of connected pairs in all pairs: 0.55%
+
+Done! 
+Time for building connections: 67.200 sec
+
+Start building connection 
+  from shell: pop_name=='['CS']'
+  to cortex: pop_name=='['FSI']'
+Number of connected pairs: 32821
+Number of possible connections: 1075834
+Fraction of connected pairs in possible ones: 3.05%
+Number of total pairs: 10837500
+Fraction of connected pairs in all pairs: 0.30%
+
+Done! 
+Time for building connections: 67.844 sec
+
+Start building connection 
+  from shell: pop_name=='['FSI']'
+  to cortex: pop_name=='['CS']'
+Number of connected pairs: 53425
+Number of possible connections: 1091852
+Fraction of connected pairs in possible ones: 4.89%
+Number of total pairs: 10837500
+Fraction of connected pairs in all pairs: 0.49%
+
+Done! 
+Time for building connections: 67.797 sec
+
+Start building connection 
+  from shell: pop_name=='['CP']'
+  to cortex: pop_name=='['LTS']'
+Number of connected pairs: 25691
+Number of possible connections: 807691
+Fraction of connected pairs in possible ones: 3.18%
+Number of total pairs: 8287500
+Fraction of connected pairs in all pairs: 0.31%
+
+Done! 
+Time for building connections: 51.557 sec
+
+Start building connection 
+  from shell: pop_name=='['LTS']'
+  to cortex: pop_name=='['CP']'
+Number of connected pairs: 51324
+Number of possible connections: 798833
+Fraction of connected pairs in possible ones: 6.42%
+Number of total pairs: 8287500
+Fraction of connected pairs in all pairs: 0.62%
+
+Done! 
+Time for building connections: 51.306 sec
+
+Start building connection 
+  from shell: pop_name=='['CS']'
+  to cortex: pop_name=='['LTS']'
+Number of connected pairs: 28674
+Number of possible connections: 800048
+Fraction of connected pairs in possible ones: 3.58%
+Number of total pairs: 8287500
+Fraction of connected pairs in all pairs: 0.35%
+
+Done! 
+Time for building connections: 50.835 sec
+
+Start building connection 
+  from shell: pop_name=='['LTS']'
+  to cortex: pop_name=='['CS']'
+Number of connected pairs: 13068
+Number of possible connections: 804946
+Fraction of connected pairs in possible ones: 1.62%
+Number of total pairs: 8287500
+Fraction of connected pairs in all pairs: 0.16%
+
+Done! 
+Time for building connections: 50.878 sec
+
+Start building gap junction 
+  in cortex: pop_name=='FSI'
+Number of connected pairs: 7799
+Number of possible connections: 173210
+Fraction of connected pairs in possible ones: 4.50%
+Number of total pairs: 360825
+Fraction of connected pairs in all pairs: 2.16%
+
+Done! 
+Time for building connections: 2.948 sec
+
+Start building gap junction 
+  in cortex: pop_name=='LTS'
+Number of connected pairs: 1514
+Number of possible connections: 104738
+Fraction of connected pairs in possible ones: 1.45%
+Number of total pairs: 210925
+Fraction of connected pairs in all pairs: 0.72%
+
+Done! 
+Time for building connections: 1.723 sec
+Building thalamus
+Building baseline
+Building shell
+Done running simulation at Tue Feb 27 03:15:47 CST 2024

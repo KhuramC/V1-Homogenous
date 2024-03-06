@@ -6,12 +6,12 @@ from bmtk.utils.sim_setup import build_env_bionet
 import synapses
 import connectors
 from connectors import (
-    spherical_dist, cylindrical_dist_z, GaussianDropoff, UniformInRange,
     ReciprocalConnector, NormalizedReciprocalRate, UnidirectionConnector,
     OneToOneSequentialConnector, GapJunction,
-    syn_dist_delay_feng_section_PN, syn_dist_delay_feng
+    syn_dist_delay_feng_section_PN, syn_dist_delay_feng, rho_2_pr
 )
 
+from homogenous_probabilities import homo_edge_probability_from_D
 ##############################################################################
 ############################## General Settings ##############################
 
@@ -24,8 +24,9 @@ t_sim = 31000.0  # ms
 dt = 0.1  # ms
 
 # Network size and dimensions
-num_cells = 10000  # 10000
-column_width, column_height = 600., 250.
+num_cells = 2000  # 10000
+#if we can change the column_height, then 350, 150 is a valid option
+column_width, column_height = 275., 250. #keeps height at same value, but network is slightly less dense as a result.
 x_start, x_end = - column_width / 2, column_width / 2
 y_start, y_end = - column_width / 2, column_width / 2
 z_start, z_end = - column_height / 2, column_height / 2
@@ -35,7 +36,7 @@ min_conn_dist = 16.0  # um. ~ PN soma diameter
 max_conn_dist = 300.0  # or np.inf
 
 # When enabled, a shell of virtual cells will be created around the core cells.
-edge_effects = True
+edge_effects = False
 
 ##############################################################################
 ####################### Cell Proportions and Positions #######################
@@ -143,6 +144,30 @@ if edge_effects:
     virt_num_CP, virt_num_CS, virt_num_FSI, virt_num_LTS = \
         num_prop([num_CP, num_CS, num_FSI, num_LTS], virt_num_cells)
 
+
+#############################################################################################
+################################## UNCORRELATED #############################################
+#X:X connectivity: Shell:Bio; ratio of shell to bio connections for convergence of different types of connections.
+#PN:PN connectivity: ~ 2:5 (1:2 is too incorrect) ~ 28%
+#PN:ITN connectivity:  1:3                        ~ 25%
+#ITN:PN connectivity:~ 1:3                        ~ 25%
+#ITN:ITN connectivity:~2:5                        ~ 28% 
+uncor_PN_percent = 30 #based on comparing proportion in Ziao's
+uncor_ITN_percent = 30 #
+uncor_num_PN = round((num_CP + num_CS) * uncor_PN_percent / (100 - uncor_PN_percent))
+uncor_num_CP, uncor_num_CS= num_prop([num_CP,num_CS], uncor_num_PN)
+uncor_num_ITN = round((num_FSI + num_LTS) * uncor_ITN_percent / (100 - uncor_ITN_percent))
+uncor_num_FSI, uncor_num_LTS =  num_prop([num_FSI,num_LTS], uncor_num_ITN)
+
+uncor_total = uncor_num_PN + uncor_num_ITN
+
+print(f"Total CP virtual cells : {uncor_num_CP}")
+print(f"Total CS virtual cells : {uncor_num_CS}")
+print(f"Total FSI virtual cells : {uncor_num_FSI}")
+print(f"Total LTS virtual cells : {uncor_num_LTS}")
+print(f"Total virtual cells : {uncor_total}")
+#If true, a 'shell' of virtual cells will be created around core cells to provide uncorrelated input
+uncorrelated = True
 # TODO: generate random orientations
 
 
@@ -326,6 +351,45 @@ network_definitions = [
     }
 ]
 
+##############################################################################
+################################ UNCORRELATED EFFECTS ########################
+if uncorrelated:
+    # This network should contain all the same properties as the original
+    # network, except the cell should be virtual. For connectivity, you should
+    # make a different connection rule because they will connect slightly differently
+    uncorrelated_network = [
+        {
+            'network_name' : 'uncorrelated',
+            'cells': [
+                { # CP
+                 'N': uncor_num_CP,
+                 'pop_name': 'CP',
+                 'model_type': 'virtual'   
+                },
+                { # CS
+                 'N': uncor_num_CS,
+                 'pop_name': 'CS',
+                 'model_type': 'virtual'   
+                },
+                { # FSI
+                 'N': uncor_num_FSI,
+                 'pop_name': 'FSI',
+                 'model_type': 'virtual'   
+                },
+                { # LTS
+                 'N': uncor_num_LTS,
+                 'pop_name': 'LTS',
+                 'model_type': 'virtual'   
+                }
+            ]
+        }
+    ]
+    
+    # Add the uncorrelated to our network definitions
+    network_definitions.extend(uncorrelated_network)
+
+############################## END UNCORRELATED ##############################
+##############################################################################
 
 ##############################################################################
 ################################ EDGE EFFECTS ################################
@@ -397,6 +461,7 @@ networks = build_networks(network_definitions)
 #   }
 # ]
 
+#TODO: CHANGE NAME TO SYN_CONST_DELAY
 edge_definitions = [
     {   # CP -> CP Reciprocal
         'network': 'cortex',
@@ -597,7 +662,184 @@ edge_definitions = [
             'target': {'pop_name': ['LTS']}
         },
         'param': 'Base2LTS'
-    }
+    },
+     ################### UNCORRELATED INPUT ###################
+    {   #uncorrelated CP -> cortex CP Unidirectional
+        'network': 'uncorrelated',
+        'edge': {
+            'source': {'pop_name': ['CP']},
+            'target': {'pop_name': ['CP']},
+            'source_network': 'uncorrelated',
+            'target_network': 'cortex'
+        },
+        'param': 'UNCOR_CP2CP',
+    #    'add_properties': 'syn_const_delay_feng_section_PN'
+    },
+    {   #uncorrelated CS -> cortex CS Unidirectional
+        'network': 'uncorrelated',
+        'edge': {
+            'source': {'pop_name': ['CS']},
+            'target': {'pop_name': ['CS']},
+            'source_network': 'uncorrelated',
+            'target_network': 'cortex'
+        },
+        'param': 'UNCOR_CS2CS',
+    #    'add_properties': 'syn_const_delay_feng_section_PN'
+    },
+    {   #uncorrelated CP -> cortex CS Unidirectional
+        'network': 'uncorrelated',
+        'edge': {
+            'source': {'pop_name': ['CP']},
+            'target': {'pop_name': ['CS']},
+            'source_network': 'uncorrelated',
+            'target_network': 'cortex'
+        },
+        'param': 'UNCOR_CP2CS',
+    #    'add_properties': 'syn_const_delay_feng_section_PN'
+    },
+    {   #uncorrelated CS -> cortex CP Unidirectional
+        'network': 'uncorrelated',
+        'edge': {
+            'source': {'pop_name': ['CS']},
+            'target': {'pop_name': ['CP']},
+            'source_network': 'uncorrelated',
+            'target_network': 'cortex'
+        },
+        'param': 'UNCOR_CS2CP',
+    #    'add_properties': 'syn_const_delay_feng_section_PN'
+    },
+    {   #uncorrelated FSI -> cortex FSI Unidirectional
+        'network': 'uncorrelated',
+        'edge': {
+            'source': {'pop_name': ['FSI']},
+            'target': {'pop_name': ['FSI']},
+            'source_network': 'uncorrelated',
+            'target_network': 'cortex'
+        },
+        'param': 'UNCOR_FSI2FSI',
+    #    'add_properties': 'syn_const_delay_feng_default'
+    },
+    {   #uncorrelated LTS -> cortex LTS Unidirectional
+        'network': 'uncorrelated',
+        'edge': {
+            'source': {'pop_name': ['LTS']},
+            'target': {'pop_name': ['LTS']},
+            'source_network': 'uncorrelated',
+            'target_network': 'cortex'
+        },
+        'param': 'UNCOR_LTS2LTS',
+    #    'add_properties': 'syn_const_delay_feng_default'
+    },
+    {   # FSI -> LTS Unidirectional
+        'network': 'uncorrelated',
+        'edge': {
+            'source': {'pop_name': ['FSI']},
+            'target': {'pop_name': ['LTS']},
+            'source_network': 'uncorrelated',
+            'target_network': 'cortex'
+        },
+        'param': 'UNCOR_FSI2LTS',
+    #    'add_properties': 'syn_const_delay_feng_default'
+    },
+    {   #uncorrelated FSI -> cortex LTS Unidirectional
+        'network': 'uncorrelated',
+        'edge': {
+            'source': {'pop_name': ['LTS']},
+            'target': {'pop_name': ['FSI']},
+            'source_network': 'uncorrelated',
+            'target_network': 'cortex'
+        },
+        'param': 'UNCOR_LTS2FSI',
+    #    'add_properties': 'syn_const_delay_feng_default'
+    },
+    {   #uncorrelated CP -> cortex FSI Unidirectional
+        'network': 'uncorrelated',
+        'edge': {
+            'source': {'pop_name': ['CP']},
+            'target': {'pop_name': ['FSI']},
+            'source_network': 'uncorrelated',
+            'target_network': 'cortex'
+        },
+        'param': 'UNCOR_CP2FSI',
+    #    'add_properties': 'syn_const_delay_feng_default'
+    },
+    {   #uncorrelated CP -> cortex FSI Unidirectional
+        'network': 'uncorrelated',
+        'edge': {
+            'source': {'pop_name': ['FSI']},
+            'target': {'pop_name': ['CP']},
+            'source_network': 'uncorrelated',
+            'target_network': 'cortex'
+        },
+        'param': 'UNCOR_FSI2CP',
+    #    'add_properties': 'syn_const_delay_feng_default'
+    },
+    {   #uncorrelated CS -> cortex FSI Unidirectional
+        'network': 'uncorrelated',
+        'edge': {
+            'source': {'pop_name': ['CS']},
+            'target': {'pop_name': ['FSI']},
+            'source_network': 'uncorrelated',
+            'target_network': 'cortex'
+        },
+        'param': 'UNCOR_CS2FSI',
+    #    'add_properties': 'syn_const_delay_feng_default'
+    },
+    {   #uncorrelated CS -> cortex FSI Unidirectional
+        'network': 'uncorrelated',
+        'edge': {
+            'source': {'pop_name': ['FSI']},
+            'target': {'pop_name': ['CS']},
+            'source_network': 'uncorrelated',
+            'target_network': 'cortex'
+        },
+        'param': 'UNCOR_FSI2CS',
+     #   'add_properties': 'syn_const_delay_feng_default'
+    },
+    {   #uncorrelated CP -> cortex LTS Unidirectional
+        'network': 'uncorrelated',
+        'edge': {
+            'source': {'pop_name': ['CP']},
+            'target': {'pop_name': ['LTS']},
+            'source_network': 'uncorrelated',
+            'target_network': 'cortex'
+        },
+        'param': 'UNCOR_CP2LTS',
+      #  'add_properties': 'syn_const_delay_feng_default'
+    },
+    {   #uncorrelated CP -> cortex LTS Unidirectional
+        'network': 'uncorrelated',
+        'edge': {
+            'source': {'pop_name': ['LTS']},
+            'target': {'pop_name': ['CP']},
+            'source_network': 'uncorrelated',
+            'target_network': 'cortex'
+        },
+        'param': 'UNCOR_LTS2CP',
+     #   'add_properties': 'syn_const_delay_feng_default'
+    },
+    {   #uncorrelated CS -> cortex LTS Unidirectional
+        'network': 'uncorrelated',
+        'edge': {
+            'source': {'pop_name': ['CS']},
+            'target': {'pop_name': ['LTS']},
+            'source_network': 'uncorrelated',
+            'target_network': 'cortex'
+        },
+        'param': 'UNCOR_CS2LTS',
+       # 'add_properties': 'syn_const_delay_feng_default'
+    },
+    {   #uncorrelated CS -> cortex LTS Unidirectional
+        'network': 'uncorrelated',
+        'edge': {
+            'source': {'pop_name': ['LTS']},
+            'target': {'pop_name': ['CS']},
+            'source_network': 'uncorrelated',
+            'target_network': 'cortex'
+        },
+        'param': 'UNCOR_LTS2CS',
+      #  'add_properties': 'syn_const_delay_feng_default'
+    },
 ]
 
 # edge_params should contain additional parameters to be added to add_edges().
@@ -610,32 +852,22 @@ edge_definitions = [
 # being forced to be converted to float if values are not specified in the
 # corresponding column in the edge csv file.
 
-gauss_rule_sigma = dict(EE=127.00, II=126.77, EI=99.84, IE=96.60)
-def GaussianRule(pmax, conn_type='EE'):
-    params = dict(stdev=gauss_rule_sigma[conn_type], pmax=pmax,
-                  min_dist=0., max_dist=max_conn_dist)
-    return GaussianDropoff(**params)
 
-# Add decorator @np.vectorize if NormalizedReciprocalRate.decisions()
-# will be used, otherwise not needed.
-def NRR_EE(d):
-    return 5.5 if d <= 60. else (1. if d >= 180. else 5.5 - 3. / 80. * (d - 60.))
+# number of every type of cell in the distant dependent model
+dist_num_cells = 10000
+dist_num_CP, dist_num_CS, dist_num_FSI, dist_num_LTS = num_prop([42.5, 42.5, 8.5, 6.5], dist_num_cells)
 
-def NRR_II(d):
-    return 4. - 3. / 200. * d if d <= 100. else 2.5 + (d - 100.) / 50.
-
-def NRR_EI(d):
-    return 3. if d <= 100. else 3. + (d - 100.) / 40.
-
+#All connection numbers and values for rho were obtained from the V1_D_build.out file.
 
 edge_params = {
     'CP2CP': {
         'connector_class': ReciprocalConnector,
         'connector_params': {
-            'p0': GaussianRule(.16, conn_type='EE'),
-            'p0_arg': cylindrical_dist_z,
-            'pr': NormalizedReciprocalRate(NRR=NRR_EE),
-            'pr_arg': '0'  # using the same as p0_arg
+            'p0': homo_edge_probability_from_D(uni_connections=447042,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_CP, 
+                                               rec_connections=95439, connect_to_same_type=True),
+            #rho is last value, gotten from D model.
+            'pr': rho_2_pr(p0,p0,rho),
+            'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -648,10 +880,11 @@ edge_params = {
     'CS2CS': {
         'connector_class': ReciprocalConnector,
         'connector_params': {
-            'p0': GaussianRule(.06, conn_type='EE'),
-            'p0_arg': cylindrical_dist_z,
-            'pr': NormalizedReciprocalRate(NRR=NRR_EE),
-            'pr_arg': '0'
+            'p0': homo_edge_probability_from_D(uni_connections=187667,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_CS, 
+                                               rec_connections=13118, connect_to_same_type=True),
+            #rho is last value, gotten from D model.
+            'pr': rho_2_pr(p0,p0,rho),
+            'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -664,12 +897,13 @@ edge_params = {
     'CP2CS': {
         'connector_class': ReciprocalConnector,
         'connector_params': {
-            'p0': GaussianRule(.01, conn_type='EE'),
-            'p0_arg': cylindrical_dist_z,
-            'p1': GaussianRule(.09, conn_type='EE'),
-            'symmetric_p1_arg': True,
-            'pr': NormalizedReciprocalRate(NRR=NRR_EE),
-            'pr_arg': '0'
+            #CP->CS
+            'p0': homo_edge_probability_from_D(uni_connections=34034,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_CP),
+            #CS->CP
+            'p1': homo_edge_probability_from_D(uni_connections=303996,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_CS),
+            #rho is last value, gotten from D model.
+            'pr': rho_2_pr(p0,p1,rho),
+            'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -693,10 +927,11 @@ edge_params = {
     'FSI2FSI': {
         'connector_class': ReciprocalConnector,
         'connector_params': {
-            'p0': GaussianRule(.50, conn_type='II'),
-            'p0_arg': cylindrical_dist_z,
-            'pr': NormalizedReciprocalRate(NRR=NRR_II),
-            'pr_arg': '0'
+            'p0': homo_edge_probability_from_D(uni_connections=39246,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=num_FSI, 
+                                               rec_connections=27866, connect_to_same_type=True),
+            #rho is last value, gotten from D model.
+            'pr': rho_2_pr(p0,p0,rho),
+            'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -709,10 +944,11 @@ edge_params = {
     'LTS2LTS': {
         'connector_class': ReciprocalConnector,
         'connector_params': {
-            'p0': GaussianRule(.10, conn_type='II'),
-            'p0_arg': cylindrical_dist_z,
-            'pr': NormalizedReciprocalRate(NRR=NRR_II),
-            'pr_arg': '0'
+            'p0': homo_edge_probability_from_D(uni_connections=7206,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=num_LTS, 
+                                               rec_connections=753, connect_to_same_type=True),
+            #rho is last value, gotten from D model.
+            'pr': rho_2_pr(p0,p0,rho),
+            'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -725,12 +961,13 @@ edge_params = {
     'FSI2LTS': {
         'connector_class': ReciprocalConnector,
         'connector_params': {
-            'p0': GaussianRule(.14, conn_type='II'),
-            'p0_arg': cylindrical_dist_z,
-            'p1': GaussianRule(.29, conn_type='II'),
-            'symmetric_p1_arg': True,
-            'pr': NormalizedReciprocalRate(NRR=NRR_II),
-            'pr_arg': '0'
+            #FSI2LTS
+            'p0': homo_edge_probability_from_D(uni_connections=14573,dist_num_cell_B=dist_num_LTS , homo_num_cell_A=num_FSI),
+            #LTS2FSI
+            'p1': homo_edge_probability_from_D(uni_connections=30280,dist_num_cell_B=dist_num_FSI , homo_num_cell_A=num_LTS),
+            #rho is last value, gotten from D model.
+            'pr': rho_2_pr(p0,p1,rho),
+            'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -754,12 +991,13 @@ edge_params = {
     'CP2FSI': {
         'connector_class': ReciprocalConnector,
         'connector_params': {
-            'p0': GaussianRule(.18, conn_type='EI'),
-            'p0_arg': cylindrical_dist_z,
-            'p1': GaussianRule(.43, conn_type='IE'),
-            'symmetric_p1_arg': True,
-            'pr': NormalizedReciprocalRate(NRR=NRR_EI),
-            'pr_arg': '0'
+            #CP2FSI
+            'p0': homo_edge_probability_from_D(uni_connections=84035,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=num_CP),
+            #FSI2CP
+            'p1': homo_edge_probability_from_D(uni_connections=191158,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_FSI),
+            #rho is last value, gotten from D model.
+            'pr': rho_2_pr(p0,p1,rho),
+            'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -783,12 +1021,13 @@ edge_params = {
     'CS2FSI': {
         'connector_class': ReciprocalConnector,
         'connector_params': {
-            'p0': GaussianRule(.22, conn_type='EI'),
-            'p0_arg': cylindrical_dist_z,
-            'p1': GaussianRule(.38, conn_type='IE'),
-            'symmetric_p1_arg': True,
-            'pr': NormalizedReciprocalRate(NRR=NRR_EI),
-            'pr_arg': '0'
+            #CS2FSI
+            'p0': homo_edge_probability_from_D(uni_connections=103106,dist_num_cell_B=dist_num_FSI, homo_num_cell_A=num_CS),
+            #FSI2CS
+            'p1': homo_edge_probability_from_D(uni_connections=168611,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_FSI),
+            #rho is last value, gotten from D model.
+            'pr': rho_2_pr(p0,p1,rho),
+            'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -812,12 +1051,13 @@ edge_params = {
     'CP2LTS': {
         'connector_class': ReciprocalConnector,
         'connector_params': {
-            'p0': GaussianRule(.23, conn_type='EI'),
-            'p0_arg': cylindrical_dist_z,
-            'p1': GaussianRule(.52, conn_type='IE'),
-            'symmetric_p1_arg': True,
-            'pr': NormalizedReciprocalRate(NRR=NRR_EI),
-            'pr_arg': '0'
+            #CP2LTS
+            'p0': homo_edge_probability_from_D(uni_connections=84025,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=num_CP),
+            #LTS2CP
+            'p1': homo_edge_probability_from_D(uni_connections=179164,dist_num_cell_B=dist_num_CP, homo_num_cell_A=num_LTS),
+            #rho is last value, gotten from D model.
+            'pr': rho_2_pr(p0,p1,rho),
+            'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -841,12 +1081,13 @@ edge_params = {
     'CS2LTS': {
         'connector_class': ReciprocalConnector,
         'connector_params': {
-            'p0': GaussianRule(.26, conn_type='EI'),
-            'p0_arg': cylindrical_dist_z,
-            'p1': GaussianRule(.13, conn_type='IE'),
-            'symmetric_p1_arg': True,
-            'pr': NormalizedReciprocalRate(NRR=NRR_EI),
-            'pr_arg': '0'
+            #CS2LTS
+            'p0': homo_edge_probability_from_D(uni_connections=93748,dist_num_cell_B=dist_num_LTS, homo_num_cell_A=num_CS),
+            #LTS2CS
+            'p1': homo_edge_probability_from_D(uni_connections=44384,dist_num_cell_B=dist_num_CS, homo_num_cell_A=num_LTS),
+            #rho is last value, gotten from D model.
+            'pr': rho_2_pr(p0,p1,rho),
+            'estimate_rho': False,
             },
         'weight_function': 'lognormal_weight',
         'syn_weight': 1.,
@@ -936,10 +1177,272 @@ edge_params = {
         'afferent_section_id': 1,  # dend
         'afferent_section_pos': 0.5,
         'dynamics_params': 'Base2LTS.json'
+    },
+    ##########################################################
+    ################### UNCORRELATED INPUT ###################
+    
+    #TODO: CHANGE TO USE FUNCTION BASED ON ZIAO'S OUTPUT
+    'UNCOR_CP2CP': {
+        'connector_class': UnidirectionConnector,
+        'connector_params': {
+            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
+            #Uncor_CP -> CP total connections [118928(Shell)] / 4000(Total CP in D model) = 29.732
+            #p = 29.732 / [Total CP in uncorrelated]
+            'p': 29.732 / uncor_num_CP,
+            },
+        'weight_function': 'lognormal_weight',
+        'syn_weight': 1.,
+        'weight_sigma': 0.8,
+        'sigma_upper_bound': 3.,
+        'afferent_section_id': 1,
+        'afferent_section_pos': 0.4,
+        'dynamics_params': 'CP2CP.json'
+    },
+    'UNCOR_CS2CS': {
+        'connector_class': UnidirectionConnector,
+        'connector_params': {
+            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
+            #Uncor_CS -> CS total connections [111505(Shell)] / 4000(Total CS in D model) = 27.87625
+            #p = 27.87625 / [Total CS in uncorrelated]
+            'p': 27.87625 / uncor_num_CS,
+            },
+        'weight_function': 'lognormal_weight',
+        'syn_weight': 1.,
+        'weight_sigma': 0.8,
+        'sigma_upper_bound': 3.,
+        'afferent_section_id': 1,
+        'afferent_section_pos': 0.4,
+        'dynamics_params': 'CS2CS.json'
+    },
+    'UNCOR_CP2CS': {
+        'connector_class': UnidirectionConnector,
+        'connector_params': {
+            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
+            #Uncor_CP -> CS total connections [14120(shell)] / 4000(Total CS in D model) = 3.53
+            #p = 3.53 / [Total CP in uncorrelated]
+            'p': 3.53 / uncor_num_CP,
+            },
+        'weight_function': 'lognormal_weight',
+        'syn_weight': 1.,
+        'weight_sigma': 0.8,
+        'sigma_upper_bound': 3.,
+        'afferent_section_id': 1,
+        'afferent_section_pos': 0.4,
+        'dynamics_params': 'CP2CS.json'
+    },
+    'UNCOR_CS2CP': {
+        'connector_class': UnidirectionConnector,
+        'connector_params': {
+            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
+            #Uncor_CS-> CP total connections [156372(shell)] / 4000(Total CP in D model) = 39.093
+            #p = 39.093 / [Total CS in uncorrelated]
+            'p': 39.093 / uncor_num_CS,
+            },
+        'weight_function': 'lognormal_weight',
+        'syn_weight': 1.,
+        'weight_sigma': 0.8,
+        'sigma_upper_bound': 3.,
+        'afferent_section_id': 1,
+        'afferent_section_pos': 0.4,
+        'dynamics_params': 'CS2CP.json'
+    },
+    'UNCOR_FSI2FSI': {
+        'connector_class': UnidirectionConnector,
+        'connector_params': {
+            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
+            #Uncor_FSI -> FSI total connections [17903(Shell)] / 1200(Total FSI in D model) = 14.91917
+            #p = 14.91917 / [Total FSI in uncorrelated]
+            'p': 14.91917 / uncor_num_FSI,
+            },
+        'weight_function': 'lognormal_weight',
+        'syn_weight': 1.,
+        'weight_sigma': 0.8,
+        'sigma_upper_bound': 3.,
+        'afferent_section_id': 0,  # soma
+        'afferent_section_pos': 0.5,
+        'dynamics_params': 'FSI2FSI.json'
+    },
+    'UNCOR_LTS2LTS': {
+        'connector_class': UnidirectionConnector,
+        'connector_params': {
+            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
+            #Uncor_LTS -> LTS total connections [6149(shell)] / 800(Total LTS in D model) = 7.68625
+            #p = 7.68625 / [Total LTS in uncorrelated]
+            'p': 7.68625 / uncor_num_LTS,
+            },
+        'weight_function': 'lognormal_weight',
+        'syn_weight': 1.,
+        'weight_sigma': 0.8,
+        'sigma_upper_bound': 3.,
+        'afferent_section_id': 0,  # soma
+        'afferent_section_pos': 0.5,
+        'dynamics_params': 'LTS2LTS.json'
+    },
+    'UNCOR_FSI2LTS': {
+        'connector_class': UnidirectionConnector,
+        'connector_params': {
+            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
+            #Uncor_FSI -> LTS total connections [20882(shell)] / 800(Total LTS in D model) = 26.1025
+            #p = 26.1025 / [Total FSI in uncorrelated]
+            'p': 26.1025 / uncor_num_FSI,
+            },
+        'weight_function': 'lognormal_weight',
+        'syn_weight': 1.,
+        'weight_sigma': 0.8,
+        'sigma_upper_bound': 3.,
+        'afferent_section_id': 0,  # soma
+        'afferent_section_pos': 0.5,
+        'dynamics_params': 'FSI2LTS.json'
+    },
+    'UNCOR_LTS2FSI': {
+        'connector_class': UnidirectionConnector,
+        'connector_params': {
+            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
+            #Uncor_LTS -> FSI total connections [32993(shell)] / 1200(Total FSI in D model) = 27.49417
+            #p = 27.49417 / [Total LTS in uncorrelated]
+            'p': 27.49417 / uncor_num_LTS,
+            },
+        'weight_function': 'lognormal_weight',
+        'syn_weight': 1.,
+        'weight_sigma': 0.8,
+        'sigma_upper_bound': 3.,
+        'afferent_section_id': 0,  # soma
+        'afferent_section_pos': 0.5,
+        'dynamics_params': 'LTS2FSI.json'
+    },
+    'UNCOR_CP2FSI': {
+        'connector_class': UnidirectionConnector,
+        'connector_params': {
+            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
+            #Uncor_CP -> FSI total connections [80519(shell)] = / 1200(Total FSI in D model) = 67.09917
+            #p = 67.09917 / [Total CP in uncorrelated]
+            'p': 67.09917 / uncor_num_CP,
+            },
+        'weight_function': 'lognormal_weight',
+        'syn_weight': 1.,
+        'weight_sigma': 0.8,
+        'sigma_upper_bound': 3.,
+        'afferent_section_id': 1,  # dend
+        'afferent_section_pos': 0.5,
+        'dynamics_params': 'CP2FSI.json'
+    },
+    'UNCOR_FSI2CP': {
+        'connector_class': UnidirectionConnector,
+        'connector_params': {
+            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
+            #Uncor_FSI -> CP total connections [80214(shell)] = / 4000(Total CP in D model) = 20.0535 
+            #p = 20.0535 / [Total FSI in uncorrelated]
+            'p': 20.0535 / uncor_num_FSI,
+            },
+        'weight_function': 'lognormal_weight',
+        'syn_weight': 1.,
+        'weight_sigma': 0.8,
+        'sigma_upper_bound': 3.,
+        'afferent_section_id': 0,  # soma
+        'afferent_section_pos': 0.5,
+        'dynamics_params': 'FSI2CP.json'
+    },
+    'UNCOR_CS2FSI': {
+        'connector_class': UnidirectionConnector,
+        'connector_params': {
+            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
+            #Uncor_CS -> FSI total connections [56807(shell)] = / 1200(Total FSI in D model) = 47.33917
+            #p = 47.33917 / [Total CS in uncorrelated]
+            'p': 47.33917 / uncor_num_CS,
+            },
+        'weight_function': 'lognormal_weight',
+        'syn_weight': 1.,
+        'weight_sigma': 0.8,
+        'sigma_upper_bound': 3.,
+        'afferent_section_id': 1,  # dend
+        'afferent_section_pos': 0.5,
+        'dynamics_params': 'CS2FSI.json'
+    },
+    'UNCOR_FSI2CS': {
+        'connector_class': UnidirectionConnector,
+        'connector_params': {
+            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
+            #Uncor_FSI -> CS total connections [63032(shell)] = / 4000(Total CS in D model) = 15.758
+            #p = 15.758 / [Total FSI in uncorrelated]
+            'p': 15.758 / uncor_num_FSI,
+            },
+        'weight_function': 'lognormal_weight',
+        'syn_weight': 1.,
+        'weight_sigma': 0.8,
+        'sigma_upper_bound': 3.,
+        'afferent_section_id': 0,  # soma
+        'afferent_section_pos': 0.5,
+        'dynamics_params': 'FSI2CS.json'
+    },
+    'UNCOR_CP2LTS': {
+        'connector_class': UnidirectionConnector,
+        'connector_params': {
+            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
+            #Uncor_CP -> LTS total connections [46497(shell)] = / 800(Total LTS in D model) = 58.12125
+            #p = 58.12125 / [Total CP in uncorrelated]
+            'p': 58.12125 / uncor_num_CP,
+            },
+        'weight_function': 'lognormal_weight',
+        'syn_weight': 1.,
+        'weight_sigma': 0.8,
+        'sigma_upper_bound': 3.,
+        'afferent_section_id': 1,  # dend
+        'afferent_section_pos': 0.5,
+        'dynamics_params': 'CP2LTS.json'
+    },
+    'UNCOR_LTS2CP': {
+        'connector_class': UnidirectionConnector,
+        'connector_params': {
+            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
+            #Uncor_LTS -> CP total connections [44780(shell)] = / 4000(Total CP in D model) = 11.195
+            #p = 11.195 / [Total LTS in uncorrelated]
+            'p': 11.195 / uncor_num_LTS,
+            },
+        'weight_function': 'lognormal_weight',
+        'syn_weight': 1.,
+        'weight_sigma': 0.8,
+        'sigma_upper_bound': 3.,
+        'afferent_section_id': 2,
+        'afferent_section_pos': 0.8,  # end of apic
+        'dynamics_params': 'LTS2CP.json'
+    },
+    'UNCOR_CS2LTS': {
+        'connector_class': UnidirectionConnector,
+        'connector_params': {
+            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
+            #Uncor_CS -> LTS total connections [21774(shell)] = / 800(Total LTS in D model) = 27.2175
+            #p = 27.2175 / [Total CS in uncorrelated]
+            'p': 27.2175 / uncor_num_CS,
+            },
+        'weight_function': 'lognormal_weight',
+        'syn_weight': 1.,
+        'weight_sigma': 0.8,
+        'sigma_upper_bound': 3.,
+        'afferent_section_id': 1,  # dend
+        'afferent_section_pos': 0.5,
+        'dynamics_params': 'CS2LTS.json'
+    },
+    'UNCOR_LTS2CS': {
+        'connector_class': UnidirectionConnector,
+        'connector_params': {
+            #Probabilities based on having extrinsic uncorrelated input and 2000 bio cells
+            #Uncor_LTS -> CS total connections [10440(shell)] = / 4000(Total CS in D model) = 2.61
+            #p = 2.61 / [Total LTS in uncorrelated]
+            'p': 2.61 / uncor_num_LTS,
+            },
+        'weight_function': 'lognormal_weight',
+        'syn_weight': 1.,
+        'weight_sigma': 0.8,
+        'sigma_upper_bound': 3.,
+        'afferent_section_id': 2,
+        'afferent_section_pos': 0.8,  # end of apic
+        'dynamics_params': 'LTS2CS.json'
     }
 }  # edges referenced by name
 
 # Will be called by conn.add_properties() for the associated connection
+
+#TODO: CHANGE TO BE SYN_CONST DELAY, BOTH ACTUALLY AND IN NAME
 edge_add_properties = {
     'syn_dist_delay_E2E': {
         'names': ['delay', 'afferent_section_id', 'afferent_section_pos'],
@@ -1069,6 +1572,7 @@ if edge_effects:
 
 net = networks['cortex']
 
+#TODO: CHANGE TO BE NON DISTANT-DEPENDENT
 # FSI
 g_gap = 0.00017 # microsiemens
 # gap junction probability correlated with chemical synapse
