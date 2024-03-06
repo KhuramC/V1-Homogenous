@@ -856,14 +856,14 @@ edge_definitions = [
 dist_num_cells = 10000
 dist_num_CP, dist_num_CS, dist_num_FSI, dist_num_LTS = num_prop([42.5, 42.5, 8.5, 6.5], dist_num_cells)
 
-#All connection numbers and values for rho were obtained from the V1_D_build.out file.
+#All connection numbers were obtained from the V1_D_build.out file.
 
 edge_params = {
     'CP2CP': {
         'connector_class': ReciprocalConnector,
         'connector_params': {
             'p0': homo_edge_probability(uni_connections=447042,num_cell_B=dist_num_CP, homo_num_cell_A=num_CP, 
-                                               rec_connections=95439, connect_to_same_type=True),
+                                              rec_connections=95439, connect_to_same_type=True),
             'pr': NormalizedReciprocalRate(NRR=3)
             },
         'weight_function': 'lognormal_weight',
