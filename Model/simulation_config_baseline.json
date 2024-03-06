@@ -2,7 +2,7 @@
   "manifest": {
     "$BASE_DIR": "${configdir}",
     "$INPUT_DIR": "$BASE_DIR/input",
-    "$OUTPUT_DIR": "$BASE_DIR/output"
+    "$OUTPUT_DIR": "$BASE_DIR/output/baseline"
   },
   "target_simulator": "NEURON",
   "run": {
@@ -24,11 +24,11 @@
       "input_file": "$INPUT_DIR/baseline.h5",
       "node_set": "baseline"
     },
-    "shell_spikes": {
+    "uncorrelated_spikes": {
       "input_type": "spikes",
       "module": "sonata",
-      "input_file": "$INPUT_DIR/shell.h5",
-      "node_set": "shell"
+      "input_file": "$INPUT_DIR/uncorrelated.h5",
+      "node_set": {"population": "uncorrelated"}
     }
   },
   "output": {
@@ -43,10 +43,10 @@
       "module": "ecp",
       "electrode_positions": "$BASE_DIR/components/recXelectrodes/single_electrode.csv",
       "file_name": "ecp.h5",
-      "tmp_dir": "$BASE_DIR/ecp_tmp",
       "electrode_channels": "all",
       "minimum_distance": "auto"
     }
   },
-  "node_sets_file": "$BASE_DIR/node_sets.json"
+  "node_sets_file": "$BASE_DIR/node_sets.json",
+  "network": "circuit_config.json"
 }

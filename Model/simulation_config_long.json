@@ -2,7 +2,7 @@
   "manifest": {
     "$BASE_DIR": "${configdir}",
     "$INPUT_DIR": "$BASE_DIR/input",
-    "$OUTPUT_DIR": "$BASE_DIR/output"
+    "$OUTPUT_DIR": "$BASE_DIR/output/long"
   },
   "target_simulator": "NEURON",
   "run": {
@@ -24,17 +24,17 @@
       "input_file": "$INPUT_DIR/baseline.h5",
       "node_set": "baseline"
     },
-    "shell_spikes": {
-      "input_type": "spikes",
-      "module": "sonata",
-      "input_file": "$INPUT_DIR/shell.h5",
-      "node_set": "shell"
-    },
     "thalamus_spikes": {
       "input_type": "spikes",
       "module": "sonata",
       "input_file": "$INPUT_DIR/thalamus_long.h5",
       "node_set": "thalamus"
+    },
+    "uncorrelated_spikes": {
+      "input_type": "spikes",
+      "module": "sonata",
+      "input_file": "$INPUT_DIR/uncorrelated.h5",
+      "node_set": {"population": "uncorrelated"}
     }
   },
   "output": {
@@ -54,5 +54,6 @@
       "minimum_distance": "auto"
     }
   },
-  "node_sets_file": "$BASE_DIR/node_sets.json"
+  "node_sets_file": "$BASE_DIR/node_sets.json",
+  "network": "circuit_config.json"
 }
