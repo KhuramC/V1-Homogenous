@@ -7,6 +7,6 @@
 RUN_NUM="${RUN_NUM:-1}"
 echo $RUN_NUM
 
-OUTPUT_DIR=../Analysis/simulation_results_v6/baseline/baseline_$RUN_NUM sbatch batch_baseline.sh
-OUTPUT_DIR=../Analysis/simulation_results_v6/short/short_$RUN_NUM sbatch batch_short.sh
-OUTPUT_DIR=../Analysis/simulation_results_v6/long/long_$RUN_NUM sbatch batch_long.sh
+OUTPUT_DIR=../Analysis/simulation_results/baseline/baseline_$RUN_NUM sbatch batch_baseline.sh
+OUTPUT_DIR=../Analysis/simulation_results/short/short_$RUN_NUM sbatch batch_short.sh
+OUTPUT_DIR=../Analysis/simulation_results/long/long_$RUN_NUM sbatch batch_long.sh
