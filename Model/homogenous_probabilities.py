@@ -43,8 +43,8 @@ def homo_edge_probability(uni_connections, num_cell_B, homo_num_cell_A, rec_conn
     (i.e. a virtual Cell Type A connecting to a biophysical Cell Type A), then this exception does not apply.
     
     Parameters:
-        uni_connections: number of unidirectional connections from Cell Type A -> Cell Type B
-        num_cell_B: number of Cell Type B in the original context
+        uni_connections: number of unidirectional connections (either wanted or from other data) from Cell Type A -> Cell Type B 
+        num_cell_B: number of Cell Type B (either in the homogenous model or from other data)
         homo_num_cell_A: number of Cell Type A in the homogenous model
         rec_connections: number of reciprocal connections from the two cells(only applies if cells are of same type)
         connect_to_same_type: boolean for whether the two cells are of the same type
