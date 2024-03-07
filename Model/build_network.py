@@ -1501,7 +1501,7 @@ if edge_effects:
 net = networks['cortex']
 
 # FSI
-g_gap = 0.0000726 # microsiemens
+g_gap = 0.0001 # microsiemens
 # gap junction probability uncorrelated with chemical synapse
 
 FSI_uncorr_p = 0.0450 #gotten from the fact that in V1_build, 4.5% of all possible connections were made.
