@@ -1119,7 +1119,7 @@ edge_params = {
         'delay': 0.0,
         'afferent_section_id': 2,
         'afferent_section_pos': 0.8,  # end of apic
-        'dynamics_params': 'Thal2CP.json'
+        'dynamics_params': 'Base2CP.json'
     },
     'Base2CS': {
         'connector_class': get_connector,
@@ -1131,7 +1131,7 @@ edge_params = {
         'delay': 0.0,
         'afferent_section_id': 2,
         'afferent_section_pos': 0.8,  # end of apic
-        'dynamics_params': 'Thal2CS.json'
+        'dynamics_params': 'Base2CS.json'
     },
     'Base2FSI': {
         'connector_class': get_connector,
