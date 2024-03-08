@@ -51,6 +51,14 @@
       "file_name": "ecp.h5",
       "electrode_channels": "all",
       "minimum_distance": "auto"
+    },
+    "v_report": {
+      "variable_name": "v",
+      "cells": {"node_ids": [0,200,400,600,850,1050,1250,1450,1700,1750,1800,1850,1900,1950,1975,1998]},
+      "module": "membrane_report",
+      "sections": "soma",
+      "file_name": "v-report.h5"
+
     }
   },
   "node_sets_file": "$BASE_DIR/node_sets.json",
