@@ -1518,7 +1518,7 @@ conn = net.add_edges(
 )
 
 # LTS
-g_gap = 0.00097 # microsiemens
+g_gap = 0.000922 # microsiemens
 # gap junction probability uncorrelated with chemical synapse
 
 LTS_uncorr_p = 0.0145 # gotten from the fact that in V1_build, 1.45% of all possible connections were made.
