@@ -154,8 +154,6 @@ def load(randseed=1111, rng_obj=None):
         rng = rng_obj
     add_synapse_model(Exp2Syn_STP, 'Exp2Syn_STP', overwrite=False)
     add_synapse_model(Exp2Syn_STP, overwrite=False)
-    add_synapse_model(AMPA_NMDA_STP, 'AMPA_NMDA_STP', overwrite=False)
-    add_synapse_model(AMPA_NMDA_STP, overwrite=False)
     
 
 
