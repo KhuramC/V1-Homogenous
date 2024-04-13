@@ -19,3 +19,5 @@ x86_64/
 /Model/input/*/*.h5
 /Model/output/*.*
 /Model/*.txt
+/Analysis/parametric_runs/*
+/Analysis/simulation_results_*/
