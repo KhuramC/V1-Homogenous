@@ -21,3 +21,4 @@ x86_64/
 /Model/*.txt
 /Analysis/parametric_runs/*
 /Analysis/simulation_results_*/
+/Analysis/simulation_results/
